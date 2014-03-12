@@ -1,0 +1,14 @@
+%p
+  %b>商品名称:
+  =@product.title
+%p
+  %b>商品详情:
+  =@product.description
+%p
+  %b>商品图片:
+  =@product.image_url
+%p
+  %b>单价:
+  =@product.price
+= link_to '编辑', edit_product_path(@product)
+= link_to '返回', products_path

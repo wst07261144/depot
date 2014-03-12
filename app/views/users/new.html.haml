@@ -1,0 +1,25 @@
+
+%div(class="row")
+  %div(class="span6 offset3")
+    = form_for(@user) do |f|
+
+      -if @user.errors.any?
+        %div( id="error_explanation")
+          %div(class="alert alert-error" )
+            %span The form contains
+            %span
+              = pluralize(@user.errors.count, "error")
+          %ul
+            -@user.errors.full_messages.each do |msg|
+              %li
+            = msg
+      =f.label :帐号
+      =f.text_field :name
+
+      =f.label :密码
+      =f.text_field :password
+
+      =f.label :确认密码
+      =f.password_field :password_confirmation
+
+      =f.submit '创建' ,:class=> "btn btn-large btn-primary"

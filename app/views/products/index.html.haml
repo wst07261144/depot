@@ -1,0 +1,24 @@
+%h1 商品列表
+%table
+  %tr
+    %th 商品名称
+    %th 商品描述
+    %th 商品图片
+    %th 单价
+-#-@products.each do |product|
+-#  %tr
+-#    %td
+-#      =product.title
+-#    %td
+-#      =product.description
+-#    %td
+-#      =product.image_url
+-#    %td
+-#      =product.price
+-#    %td
+-#      =link_to '商品详情','#'
+-#    %td
+-#      =link_to '编辑','#'
+-#    %td
+-#      =link_to '删除',product, :confirm => "确定要删除#{product.title}吗？ ", :method =>:delete
+= link_to '创建商品', new_products_path

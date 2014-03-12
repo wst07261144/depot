@@ -1,0 +1,21 @@
+%h1 创建新商品
+=form_for(@product) do |f|
+
+
+  = f.label :商品名称
+  = f.text_field :title
+
+  = f.label :商品描述
+  = f.text_area :description, :rows => 6
+
+  = f.label :商品图片
+  = f.text_field :image_url
+
+  = f.label :单价
+  = f.text_field :price
+
+  -#= f.error_messages
+
+  = f.submit "创建"
+
+  = link_to '返回',root_path

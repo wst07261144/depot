@@ -1,0 +1,7 @@
+%h1 编辑商品
+-form_for(@product) do |f|
+  =render 'form_content'
+  = f.submit "编辑"
+
+= link_to '商品详情', @product
+= link_to '返回', products_path
