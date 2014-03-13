@@ -4,10 +4,13 @@ Depot::Application.routes.draw do
 
   resource :products
 
+  resource :sessions
+
   resource :users
 
   get "users/index"
   get "users/new"
+  get "sessions/new"
   get "users/create"
   get "users/edit"
   get "users/update"

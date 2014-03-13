@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
        flash[:success] = "Welcome to the Sample App!"
-       redirect_to '#' #转向地址我们直接写了 @user，而没用 user_path，Rails 会自动转向到用户的资料页面
+       redirect_to '/sessions/new' #转向地址我们直接写了 @user，而没用 user_path，Rails 会自动转向到用户的资料页面
     else
        render 'new'
     end
