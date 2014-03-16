@@ -9,6 +9,9 @@ Depot::Application.routes.draw do
   resource :users
   get 'products/index'=>'products#index'
   get 'products/girl/tops'=>'products#girl_tops'
+  get 'products/girl/bottoms'=>'products#girl_bottoms'
+  get 'products/boy/tops'=>'products#boy_tops'
+  get 'products/boy/bottoms'=>'products#boy_bottoms'
 
   get "store/index"
   get "users/index"

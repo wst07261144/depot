@@ -30,6 +30,18 @@ class ProductsController < ApplicationController
     @products = Product.all
   end
 
+  def boy_tops
+    @products = Product.all
+  end
+
+  def girl_bottoms
+    @products = Product.all
+  end
+
+  def boy_bottoms
+    @products = Product.all
+  end
+
   private
 
   def product_params
