@@ -1,19 +1,33 @@
-#product_list
-  %h1 商品列表
-%table
-  -@products.each do |product|
-    %tr(class="cycle('list_Line_odd','list_line_even')" )
-      %td
-        =image_tag(product.img_url,:class => 'list_image')
-      %td(class="list_description")
-        %dl
-          %dt
-            =product.title
-            %dd
-              =truncate(strip_tags(product.description),:length=>80)
-      %td(class="list_actions")
-        =link_to '展示',product
-        =link_to '编辑',edit_products_path(product)
-        =link_to '删除',product,:confirm => '确实要删除吗？',:method => :delete
+%div(class='navbar navbar-default ')
+  %div(class='navbar-header')
+    -#=img_tag()
+  %div(class='navbar-collapse collapse')
+    %ul(class='nav navbar-nav')
+      %h4商品列表
+    %br
+    %ul(class='nav navbar-nav navbar-right')
+      %h5
+        %span 你好，
+        %span
+          =@user
+.container
+  .row
+    =render 'sort_list'
+    %div(class="container" style="width:80%" )
+      %table
+        -@products.each do |product|
+          %tr(class="table table-striped table-hover" )
+            %td(width="500px" height='200px')
+              =image_tag(product.image_url,:class => 'list_image')
+            %td(class="list_description" width="200px")
+              %dl
+                %dt
+                  =product.title
+                  %dd
+                    =truncate(strip_tags(product.description),:length=>80)
+            %td(class="list_actions" width="200px")
+              =link_to '展示','#'
+              =link_to '编辑',edit_products_path(product)
+              =link_to '删除',"#",:confirm => '确实要删除吗？',:method => :delete
 
-=link_to '新建商品',new_products_path
+      =link_to '新建商品',new_products_path

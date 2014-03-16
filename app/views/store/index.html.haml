@@ -1,14 +1,14 @@
--if notice
-  %p(id = 'notice')
-    = notice
-
-%h1 your pragmatic
--@products.each do |product|
-  .entry
-    =image_tag(product.image_url)
-    %h3
-      =product.title
-    =sanitize(product.description)
-    .price_line
-      %span(class="price")
-        =number_to_currency(product.price)
+-#-if notice
+-#  %p(id = 'notice')
+-#    = notice
+-#
+-#%h1 your pragmatic
+-#-@products.each do |product|
+-#  .entry
+-#    =image_tag(product.image_url)
+-#    %h3
+-#      =product.title
+-#    =sanitize(product.description)
+-#    .price_line
+-#      %span(class="price")
+-#        =number_to_currency(product.price)

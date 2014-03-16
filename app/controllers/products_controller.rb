@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
 
   def index
-    #@products = Product.all
+    @user = User.find_by(id:session[:user_id]).name
+    @products = Product.all
   end
 
   def new
@@ -9,8 +10,12 @@ class ProductsController < ApplicationController
   end
 
   def create
-    Product.create(params[:product].permit!)
-    redirect_to root_path
+    @product = Product.new(product_params)
+    if @product.save
+      redirect_to '/products/index'
+    else
+      render 'new'
+    end
   end
 
   def show
@@ -19,6 +24,16 @@ class ProductsController < ApplicationController
   end
 
   def edit
+  end
+
+  def girl_tops
+    @products = Product.all
+  end
+
+  private
+
+  def product_params
+    params.require(:product).permit(:name, :title, :description, :image_url, :price)
   end
 
 end

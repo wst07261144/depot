@@ -1,14 +1,16 @@
 Depot::Application.routes.draw do
 
-  get "store/index"
-  root "store/index" ,:as=>'store'
+  root "sessions#new"
 
   resource :products
 
   resource :sessions
 
   resource :users
+  get 'products/index'=>'products#index'
+  get 'products/girl/tops'=>'products#girl_tops'
 
+  get "store/index"
   get "users/index"
   get "users/new"
   get "sessions/new"
