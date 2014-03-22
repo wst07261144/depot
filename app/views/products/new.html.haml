@@ -1,4 +1,5 @@
-%h1 创建新商品
+=render 'header'
+%br
 .row
   .span9.offset4
     =form_for(@product) do |f|
@@ -15,39 +16,31 @@
         = f.label :商品名称
         = f.text_field :title
       .field
-        = f.label :商品描述
-        = f.text_area :description, :rows => 6
+        = f.label :商品面料
+        = f.text_field :mian_liao
       .field
-        = f.label :商品图片
-        = f.text_field :image_url
-        = f.text_field :image_url1
-        = f.text_field :image_url2
-        = f.text_field :image_url3
-        = f.text_field :image_url4
-
+        = f.label :商品品牌
+        = f.text_field :logo
+      .field
+        = f.label :主图来源
+        = f.text_field :pic_source
+      .field
+        = f.label :发布季节
+        = f.text_field :season
+      .field
+        = f.label :商品风格
+        = f.text_field :style
+      .field
+        = f.label :商品厚薄
+        = f.text_field :hou_bao
+      .field
+        = f.label :商品货号
+        = f.text_field :huo_hao
       .field
         = f.label :价格
         = f.text_field :price
-      .field
-        = f.label :颜色
-        %dl(class="tag-list" rel="tag-list" )
-          %dt
-            %dd
-              -["红色","白色","黄色","黑色","粉色","黄色","天蓝色","灰色"].each do |tag|
-                =f.check_box :color,{:multiple=>true},"#{tag}"
-                =tag
-      .field
-        = f.label :类别
-        %dl(class="tag-list" rel="tag-list" )
-          %dt
-            %dd
-              -["男上装","男下装","女上",''].each do |tag|
-                =f.check_box :sort,{:multiple=>true},"#{tag}"
-                =tag
 
       .actions.center
-        = f.submit "创建"
+        = f.submit "下一步", :class=>' btn btn-primary'
 
         = link_to '返回',root_path,:style => "float:right"
--#{"utf8"=>"✓", "authenticity_token"=>"4eAaDIn734H+XoRwTt3NiQGd1hjTM9+gD3Sa64Szwwc=", "product"=>{"title"=>"", "description"=>"", "image_url"=>"", "price"=>"0.0", "color"=>["0", "0", "白色", "0", "黄色"], "sort"=>["0", "男上装", "0", "男下装", "0"]}, "commit"=>"创建"}
--# Parameters: {"utf8"=>"✓", "authenticity_token"=>"4eAaDIn734H+XoRwTt3NiQGd1hjTM9+gD3Sa64Szwwc=", "product"=>{"title"=>"", "description"=>"", "image_url"=>"1", "image_url1"=>"2", "image_url2"=>"3", "image_url3"=>"4", "image_url4"=>"5", "price"=>"0.0", "color"=>["0", "0", "0"], "sort"=>["0", "0", "0"]}, "commit"=>"创建"}

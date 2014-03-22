@@ -6,16 +6,23 @@ class ProductsController < ApplicationController
   end
 
   def new
+    @subject = '创建新商品'
     @product = Product.new
+    @user = User.find(session[:user_id]).name
   end
 
   def create
     @product = Product.new(product_params)
     if @product.save
-      redirect_to '/products/index'
+      redirect_to '/products/next_step'
     else
       render 'new'
     end
+  end
+
+  def color_size_image
+    @user = User.find(session[:user_id]).name
+    @subject = '设置商品属性'
   end
 
   def show
@@ -45,7 +52,7 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :title, :description, :image_url, :price)
+    params.require(:product).permit(:title, :mian_liao, :logo, :pic_source, :season, :style, :hou_bao, :huo_hao, :price)
   end
 
 end

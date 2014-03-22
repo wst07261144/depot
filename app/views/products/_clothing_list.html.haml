@@ -4,13 +4,13 @@
       %tr(class="table table-striped table-hover" )
         %td(width="500px" height='200px')
           =image_tag(product.image_url,:class => 'list_image')
-        %td(class="list_description" width="200px")
+        %td(class="list_description" width="400px")
           %dl
             %dt
               =product.title
               %dd
                 =truncate(strip_tags(product.description),:length=>80)
-        %td(class="list_actions" width="200px")
+        %td(class="list_actions" width="300px")
           =link_to '查看详情','#'
           =link_to '编辑',edit_products_path(product)
           =link_to '删除',"#",:confirm => '确实要删除吗？',:method => :delete

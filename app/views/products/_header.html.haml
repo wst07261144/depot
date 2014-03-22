@@ -1,12 +1,9 @@
-%div(class='navbar navbar-default ')
-  %div(class='navbar-header')
-    -#=img_tag()
-  %div(class='navbar-collapse collapse')
-    %ul(class='nav navbar-nav')
-      %h4商品列表
-    %br
-    %ul(class='nav navbar-nav navbar-right')
-      %h5
+.navbar.navbar-default.navbar-static-top
+  .container
+    .navbar-collapse.collapse
+      %h4.text-center
+        = @subject
+      %ul.nav.navbar-nav.navbar-right
         %span 你好，
         %span
           =@user

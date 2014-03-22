@@ -7,7 +7,9 @@ Depot::Application.routes.draw do
   resource :sessions
 
   resource :users
+
   get 'products/index'=>'products#index'
+  get 'products/next_step'=>'products#color_size_image'
   get 'products/girl/tops'=>'products#girl_tops'
   get 'products/girl/bottoms'=>'products#girl_bottoms'
   get 'products/boy/tops'=>'products#boy_tops'
