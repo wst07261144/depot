@@ -14,6 +14,7 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     if @product.save
+      session[:product_id] = @product.id
       redirect_to '/products/next_step'
     else
       render 'new'
@@ -25,9 +26,13 @@ class ProductsController < ApplicationController
     @subject = '设置商品属性'
   end
 
+  def save_product_attr
+    Product.save_product_attrs(session[:product_id], params)
+    render :text=>'ok'
+  end
+
   def show
     @product = Product.find params[:id]
-
   end
 
   def edit

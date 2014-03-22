@@ -10,6 +10,8 @@ Depot::Application.routes.draw do
 
   get 'products/index'=>'products#index'
   get 'products/next_step'=>'products#color_size_image'
+  post 'products/pro_attr'=>'products#save_product_attr'
+
   get 'products/girl/tops'=>'products#girl_tops'
   get 'products/girl/bottoms'=>'products#girl_bottoms'
   get 'products/boy/tops'=>'products#boy_tops'
