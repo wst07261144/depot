@@ -1,8 +1,8 @@
 class Product < ActiveRecord::Base
 
-  has_many :product_colors
-  has_many :product_images
-  has_many :product_sizes
+  has_many :product_colors, dependent: :destroy
+  has_many :product_images, dependent: :destroy
+  has_many :product_sizes, dependent: :destroy
 
   validates :title,  presence: true, uniqueness: true
   validates :mian_liao,  presence: true, uniqueness: true
@@ -15,18 +15,38 @@ class Product < ActiveRecord::Base
   validates :price, :numericality => {:greater_than_equal_to => 0.01},uniqueness: true
 
   def self.save_product_attrs(product_id, data)
-    product = Product.find_by(id: product_id)
+    id = product_id || data['id']
+    product = Product.find_by(id: id)
     product.sort = data['sort'][0]
     product.save
+
     data['color'].each do |col|
-      product.product_colors.create(color: col)
+      product.product_colors.find_by(color: col).nil? ? product.product_colors.create(color: col): {}
     end
+    del = product.product_colors.pluck(:color) - data['color']
+    ProductColor.delete_all(product_id: product_id,color: del) if del.length != 0
+
     data['image'].each do |img|
-       product.product_images.create(image_url: img)
+      product.product_images.find_by(image_url: img).nil? ?  product.product_images.create(image_url: img):{}
     end
+    del_img = product.product_images.pluck(:image_url) - data['image']
+    ProductImage.delete_all(product_id: product_id, image_url: del_img) if del_img.length != 0
+
     data['size'].each do |size|
-       product.product_sizes.create(size: size)
+      product.product_sizes.find_by(size:size).nil? ? product.product_sizes.create(size: size):{}
     end
+    del_size = product.product_sizes.pluck(:size) - data['size']
+    ProductSize.delete_all(product_id:product_id, size:del_size)
+
   end
+
+  def self.fetch_edit_data(product_id)
+    product = Product.find_by(id: product_id)
+    color = product.product_colors.pluck(:color)
+    size = product.product_sizes.pluck(:size)
+    img = product.product_images.pluck(:image_url)
+    {color:color,size:size,image_url:img ,product_id:product_id,sort:product.sort}.to_json
+  end
+
 
 end

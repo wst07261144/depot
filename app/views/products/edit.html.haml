@@ -1,7 +1,50 @@
-%h1 编辑商品
--form_for(@product) do |f|
-  =render 'form_content'
-  = f.submit "编辑"
+=render 'header'
+%br
+.row
+  .span9.offset4
+    =form_for(:product) do |f|
 
-= link_to '商品详情', @product
-= link_to '返回', products_path
+      -if @product.errors.any?
+        #error_explanation
+          %h2
+            =pluralize(@product.errors.count,'error')
+          %ul
+            -@product.errors.full_messages.each do |msg|
+              %li
+                =msg
+      .field
+        = f.label :商品名称
+        = f.text_field :title
+      .field
+        = f.label :商品面料
+        = f.text_field :mian_liao
+      .field
+        = f.label :商品品牌
+        = f.text_field :logo
+      .field
+        = f.label :主图来源
+        = f.text_field :pic_source
+      .field
+        = f.label :发布季节
+        = f.text_field :season
+      .field
+        = f.label :商品风格
+        = f.text_field :style
+      .field
+        = f.label :商品厚薄
+        = f.text_field :hou_bao
+      .field
+        = f.label :商品货号
+        = f.text_field :huo_hao
+      .field
+        = f.label :价格
+        = f.text_field :price
+
+      .actions.center
+        = f.submit "下一步", :class=>' btn btn-primary'
+
+        = link_to '返回',root_path,:style => "float:right"
+
+
+= link_to '商品详情', '#'
+= link_to '返回', '#'

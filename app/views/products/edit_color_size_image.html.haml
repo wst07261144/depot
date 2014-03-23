@@ -1,0 +1,63 @@
+=render 'header'
+%br
+.container(style="width:80%" )
+  %div#setting
+    .form-group#color
+      %label.col-sm-2.control-label 商品颜色:
+      .dl-horizontal.filter-dl
+        %dd
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 白色
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 黑色
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 红色
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 黄色
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 粉色
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 蓝色
+          %br
+          %br
+          .col-xs-2.none
+            %input.form-control(type="text" )
+          %a.btn.btn-primary(href="javascript:{}" onclick="add_color_input(color)")
+            添加颜色
+    %hr
+    .form-group#size
+      %label.col-sm-2.control-label 商品尺码:
+      .dl-horizontal.filter-dl
+        %dd
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") S
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") L
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") XL
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") XXL
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") XXXL
+          %br
+          %br
+          -#.col-xs-2
+          -#  %input.form-control(type="text")
+          .col-xs-2.none
+            %input.form-control(type="text" )
+          %a.btn.btn-primary(href="javascript:{}" onclick="add_size_input(size)")
+            添加尺码
+    %hr
+    .form-group#sort
+      %label.col-sm-2.control-label 商品类别:
+      .dl-horizontal.filter-dl
+        %dd
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 男士上装
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 男士裤装
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 女士上装
+          %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 女士裤装、裙装
+      %hr
+    .form-group#image
+      %label.col-sm-2.control-label 商品图片:
+      .dl-horizontal.filter-dl
+        %dd
+          .col-xs-2.none
+            %input.form-control(type="text")
+          .col-xs-2
+            %a.btn.btn-primary(href="javascript:{}" onclick="add_image_input(image)")
+              添加图片
+    %div(style="float:right" )
+      %a.btn.btn-default.btn-lg() 取消
+      %a.btn.btn-primary.btn-lg#save_setting(href="#"  onclick="save_settings()") 保存
+
+#data.none
+  =@data

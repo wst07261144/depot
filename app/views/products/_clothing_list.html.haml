@@ -3,16 +3,23 @@
     -@products.each do |product|
       %tr(class="table table-striped table-hover" )
         %td(width="500px" height='200px')
-          =image_tag(product.image_url,:class => 'list_image')
+          =image_tag(product[:image_url],:class => 'list_image')
         %td(class="list_description" width="400px")
           %dl
             %dt
-              =product.title
+              =product[:title]
               %dd
-                =truncate(strip_tags(product.description),:length=>80)
+                品牌：
+                =product[:logo]
+              %dd
+                颜色：
+                =product[:color]
+              %dd
+                尺寸：
+                =product[:size]
         %td(class="list_actions" width="300px")
           =link_to '查看详情','#'
-          =link_to '编辑',edit_products_path(product)
-          =link_to '删除',"#",:confirm => '确实要删除吗？',:method => :delete
-
+          =link_to '编辑', '/products/'+ product[:id].to_s + '/edit'
+          =link_to '删除', product,:confirm => '确实要删除吗？',:method => :delete
+.right
   =link_to '新建商品',new_products_path

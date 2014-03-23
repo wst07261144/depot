@@ -11,6 +11,9 @@ Depot::Application.routes.draw do
   get 'products/index'=>'products#index'
   get 'products/next_step'=>'products#color_size_image'
   post 'products/pro_attr'=>'products#save_product_attr'
+  get 'products/:id/edit/'=>'products#edit'
+  get 'products/next_step/:id'=>'products#edit_color_size_image'
+  post 'products/:id/edit'=>'products#update'
 
   get 'products/girl/tops'=>'products#girl_tops'
   get 'products/girl/bottoms'=>'products#girl_bottoms'
@@ -26,8 +29,6 @@ Depot::Application.routes.draw do
   get "users/update"
   get "users/destroy"
 
-  #get '/products' => 'products#index'
-  #get '/new' => 'products#new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
