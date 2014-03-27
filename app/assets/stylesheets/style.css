@@ -782,3 +782,7 @@
 .dropdown-menu-item-hide .icon-ok {
     visibility: hidden;
 }
+.table-css{
+    width:42% ;
+   padding-left: 30px;
+}

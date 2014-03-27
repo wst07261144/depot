@@ -46,7 +46,12 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find params[:id]
+    @subject = '商品详情'
+    @user = User.find(session[:user_id]).name
+    @product = Product.find params[:format]
+    @color = @product.product_colors.pluck(:color)
+    @size = @product.product_sizes.pluck(:size)
+    @image = @product.product_images.pluck(:image_url)
   end
 
   def edit

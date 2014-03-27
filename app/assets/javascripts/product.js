@@ -77,7 +77,7 @@ function turn_css(el){
     })
 }
 $(function(){
-    if (window.location.pathname.substring()!=''){
+    if (window.location.pathname.substring(20)!=''){
        var product_id = window.location.pathname.substring(20);
        var data = JSON.parse( $('#data').text())
         $.each(data.color,function(index,col){
@@ -124,3 +124,5 @@ $(function(){
 
     }
 })
+
+

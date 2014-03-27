@@ -1,14 +1,69 @@
-%p
-  %b>商品名称:
-  =@product.title
-%p
-  %b>商品详情:
-  =@product.description
-%p
-  %b>商品图片:
-  =@product.image_url
-%p
-  %b>单价:
-  =@product.price
-= link_to '编辑', edit_product_path(@product)
-= link_to '返回', products_path
+=render 'header'
+%br
+%br
+.container
+  %div(style="width:100%" )
+    %div(style="float:left;width:50%" )
+      =image_tag(@image[0],:class => 'list_image')
+    .list_description
+      %h5
+        =@product.title
+      %br
+      %h4(style="background-color:red; height:100px;line-height:100px;text-align:center;color:white")
+        今日促销 ￥
+        =@product.price
+      %br
+      %h5
+        选择颜色:
+        %span
+          -@color.each do |color|
+            %input(type="radio" name="color" value="#{color}")
+              =color
+      %h5
+        选择尺码:
+        %span
+          -@size.each do |size|
+            %input(type="radio" name="size" value="#{size}")
+              = size
+      %h5
+        数量:
+        %input(style="width:70px;height:20px" )
+      %div(style="float:right; padding-right:40px")
+        .btn.btn-default
+          =link_to '编辑',"/products/#{@product.id}/edit"
+        .btn.btn-default
+          =link_to '删除', @product,:confirm => '确实要删除吗？',:method => :delete
+.container
+  %br
+  %div(style="background-color:lightblue")
+    %h4(style="height:40px;line-height:40px; padding-left:30px") 产品参数
+    %table
+      %tr
+        %td.table-css
+          主图来源：
+          =@product.pic_source
+        %td.table-css
+          品牌：
+          =@product.logo
+        %td.table-css
+          面料：
+          =@product.mian_liao
+      %tr
+        %td.table-css
+          厚薄：
+          =@product.hou_bao
+        %td.table-css
+          发布季节：
+          =@product.season
+        %td.table-css
+          风格：
+          =@product.style
+      %tr
+        %td.table-css
+          货号：
+          =@product.huo_hao
+    %br
+  %br
+  %div
+    -@image.each do |t|
+      =image_tag(t,:class => 'list_image')

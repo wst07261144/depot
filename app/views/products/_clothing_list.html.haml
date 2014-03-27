@@ -18,7 +18,7 @@
                 尺寸：
                 =product[:size]
         %td(class="list_actions" width="300px")
-          =link_to '查看详情','#'
+          =link_to '查看详情', products_path(product[:id])
           =link_to '编辑', '/products/'+ product[:id].to_s + '/edit'
           =link_to '删除', product,:confirm => '确实要删除吗？',:method => :delete
 .right
