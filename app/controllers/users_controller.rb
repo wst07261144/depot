@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  def index
-  end
 
   def new
     @user = User.new
@@ -9,30 +7,50 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-       flash[:success] = "Welcome to the Sample App!"
-       redirect_to '/sessions/new' #转向地址我们直接写了 @user，而没用 user_path，Rails 会自动转向到用户的资料页面
+       redirect_to '/sessions/new'
     else
        render 'new'
     end
   end
 
-  def show
-    @user = User.find params[:id]
+  def super_index
+    @user = User.find(session[:user_id]).name
+    @subject = '管理员用户列表'
+    @users = User.where(admin: 'admin')
+  end
+
+  def super_new
+    @user = User.new
+  end
+
+  def super_create
+    @user = User.new(user_params)
+    @user.admin = 'admin'
+    if @user.save
+      redirect_to '/users/super_index'
+    else
+      render 'super_new'
+    end
   end
 
   def edit
+    @user = User.find(params[:format])
   end
 
   def update
+    User.find(params[:id]).update_attributes(user_params)
+    redirect_to root_path
   end
 
   def destroy
+    User.find(params[:id]).destroy
+    redirectto '/users/super_index'
   end
 
   private
 
   def user_params
-  params.require(:user).permit(:name, :password, :password_confirmation)
+  params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
 end

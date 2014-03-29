@@ -14,11 +14,17 @@ Depot::Application.routes.draw do
   get 'products/:id/edit/'=>'products#edit'
   get 'products/next_step/:id'=>'products#edit_color_size_image'
   post 'products/:id/edit'=>'products#update'
-
   get 'products/girl/tops'=>'products#girl_tops'
   get 'products/girl/bottoms'=>'products#girl_bottoms'
   get 'products/boy/tops'=>'products#boy_tops'
   get 'products/boy/bottoms'=>'products#boy_bottoms'
+
+  get 'users/super_index'=> 'users#super_index'
+  get 'users/super_new'=> 'users#super_new'
+  post 'users/super_create'=> 'users#super_create'
+  patch 'users/update/:id'=>'users#update'
+  delete 'users/destroy/:id'=>'users#destroy'
+
 
   get "store/index"
   get "users/index"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321115135) do
+ActiveRecord::Schema.define(version: 20140328102817) do
 
   create_table "product_colors", force: true do |t|
     t.integer  "product_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20140321115135) do
     t.string   "admin"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email"
   end
 
 end

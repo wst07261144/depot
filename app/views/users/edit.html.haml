@@ -1,6 +1,6 @@
 %div(class="row" style="padding-top:60px" )
   %div(class="span6 offset3")
-    = form_for(@user) do |f|
+    = form_for(@user, url: '/users/update/'+@user.id.to_s) do |f|
 
       -if @user.errors.any?
         %div( id="error_explanation")
@@ -19,9 +19,9 @@
       =f.email_field :email
 
       =f.label :密码
-      =f.text_field :password
+      =f.password_field :password
 
       =f.label :确认密码
       =f.password_field :password_confirmation
 
-      =f.submit '创建' ,:class=> "btn btn-large btn-primary"
+      =f.submit '保存' ,:class=> "btn btn-large btn-primary"
