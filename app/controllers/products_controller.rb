@@ -88,6 +88,14 @@ class ProductsController < ApplicationController
     @products = generate_products_for_page(products)
   end
 
+  def destroy
+    product = Product.find(params[:id])
+    product.product_colors.destroy
+    product.product_images.destroy
+    product.product_sizes.destroy
+    product.destroy
+  end
+
   private
 
   def product_params

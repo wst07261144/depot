@@ -20,6 +20,6 @@
         %td(class="list_actions" width="300px")
           =link_to '查看详情', products_path(product[:id])
           =link_to '编辑', '/products/'+ product[:id].to_s + '/edit'
-          =link_to '删除', product,:confirm => '确实要删除吗？',:method => :delete
+          =link_to '删除', 'destroy/' + product[:id].to_s,:confirm => '确实要删除吗？',:method => :delete
 .right
   =link_to '新建商品',new_products_path

@@ -32,7 +32,7 @@
         .btn.btn-default
           =link_to '编辑',"/products/#{@product.id}/edit"
         .btn.btn-default
-          =link_to '删除', @product,:confirm => '确实要删除吗？',:method => :delete
+          =link_to '删除', 'destroy/' + @product.id.to_s,:confirm => '确实要删除吗？',:method => :delete
 .container
   %br
   %div(style="background-color:lightblue")
