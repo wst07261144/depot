@@ -22,6 +22,7 @@ Depot::Application.routes.draw do
 
   get 'users/super_index'=> 'users#super_index'
   get 'users/super_new'=> 'users#super_new'
+  get 'users/quit'=> 'users#quit'
   post 'users/super_create'=> 'users#super_create'
   patch 'users/update/:id'=>'users#update'
   delete 'users/destroy/:id'=>'users#destroy'

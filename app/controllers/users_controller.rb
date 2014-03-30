@@ -47,6 +47,11 @@ class UsersController < ApplicationController
     redirectto '/users/super_index'
   end
 
+  def quit
+    session[:user_id] = nil
+    redirect_to root_path
+  end
+
   private
 
   def user_params
