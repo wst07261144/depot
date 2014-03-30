@@ -61,21 +61,29 @@ function save_settings(){
     });
 }
 
-function turn_css(el){
-    var id = $(el).parent().attr('id')
-    console.log(id)
-    console.log(window.location.pathname)
-    $('.multilevel-nav li').each(function(index,el){
+$(document).on("page:load", function () {
+    change_service_header_style_to_active()
+});
 
-        if($(el).hasClass('active') && $(this).attr('id')!= id ){
-            $(this).removeClass('active')
+function change_service_header_style_to_active() {
+    var url_and_id_mapping={
+    '/products/index': 'all',
+    '/products/girl/tops': 'girl_tops',
+    '/products/girl/bottoms': 'girl_bottoms',
+    '/products/boy/tops': 'boy_tops',
+    '/products/boy/bottoms': 'boy_bottoms'
+    }
+    $.each(['/products/index','/products/girl/tops','/products/girl/bottoms','/products/boy/tops','/products/boy/bottoms'],function(index,item){
+        if(window.location.pathname == item){
+           $('#' + url_and_id_mapping[window.location.pathname]).addClass('active')
         }
-        if($(el).attr('id') == id){
-            $(this).addClass('active')
+        if(window.location.pathname != item && $("#" + url_and_id_mapping[item]).hasClass('active')){
+           $('#' + url_and_id_mapping[item]).removeClass('active')
         }
-
     })
 }
+
+
 $(function(){
     if (window.location.pathname.substring(20)!=''){
        var product_id = window.location.pathname.substring(20);

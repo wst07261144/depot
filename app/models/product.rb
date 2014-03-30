@@ -5,14 +5,14 @@ class Product < ActiveRecord::Base
   has_many :product_sizes, dependent: :destroy
 
   validates :title,  presence: true, uniqueness: true
-  validates :mian_liao,  presence: true, uniqueness: true
-  validates :logo,  presence: true, uniqueness: true
-  validates :pic_source,  presence: true, uniqueness: true
-  validates :season,  presence: true, uniqueness: true
-  validates :style,  presence: true, uniqueness: true
-  validates :hou_bao,  presence: true, uniqueness: true
-  validates :huo_hao,  presence: true, uniqueness: true
-  validates :price, :numericality => {:greater_than_equal_to => 0.01},uniqueness: true
+  validates :mian_liao,  presence: true
+  validates :logo,  presence: true
+  validates :pic_source,  presence: true
+  validates :season,  presence: true
+  validates :style,  presence: true
+  validates :hou_bao,  presence: true
+  validates :huo_hao,  presence: true
+  validates :price, :numericality => {:greater_than_equal_to => 0.01}
 
   def self.save_product_attrs(product_id, data)
     id = product_id || data['id']

@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   def index
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.all
+    products = Product.where(user_id: session[:user_id])
     @products = generate_products_for_page(products)
   end
 
@@ -15,6 +15,7 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
+    @product.user_id = session[:user_id]
     if @product.save
       session[:product_id] = @product.id
       redirect_to '/products/next_step'
@@ -63,28 +64,28 @@ class ProductsController < ApplicationController
   def girl_tops
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '女士上装')
+    products = Product.where(user_id: session[:user_id], sort: '女士上装')
     @products = generate_products_for_page(products)
   end
 
   def boy_tops
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '男士上装')
+    products = Product.where(user_id: session[:user_id], sort: '男士上装')
     @products = generate_products_for_page(products)
   end
 
   def girl_bottoms
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '女士下装')
+    products = Product.where(user_id: session[:user_id], sort: '女士下装')
     @products = generate_products_for_page(products)
   end
 
   def boy_bottoms
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '男士下装')
+    products = Product.where(user_id: session[:user_id], sort: '男士下装')
     @products = generate_products_for_page(products)
   end
 
@@ -99,7 +100,7 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:title, :mian_liao, :logo, :pic_source, :season, :style, :hou_bao, :huo_hao, :price)
+    params.require(:product).permit(:title, :mian_liao, :logo, :pic_source, :season, :style, :hou_bao, :huo_hao, :price, :user_id)
   end
 
   def generate_products_for_page(products)
