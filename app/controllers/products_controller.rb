@@ -1,9 +1,10 @@
 class ProductsController < ApplicationController
+  before_action :is_admin
 
   def index
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(user_id: session[:user_id])
+    products = Product.all
     @products = generate_products_for_page(products)
   end
 
@@ -64,28 +65,28 @@ class ProductsController < ApplicationController
   def girl_tops
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(user_id: session[:user_id], sort: '女士上装')
+    products = Product.where(sort: '女士上装')
     @products = generate_products_for_page(products)
   end
 
   def boy_tops
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(user_id: session[:user_id], sort: '男士上装')
+    products = Product.where( sort: '男士上装')
     @products = generate_products_for_page(products)
   end
 
   def girl_bottoms
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(user_id: session[:user_id], sort: '女士下装')
+    products = Product.where(sort: '女士下装')
     @products = generate_products_for_page(products)
   end
 
   def boy_bottoms
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(user_id: session[:user_id], sort: '男士下装')
+    products = Product.where(sort: '男士下装')
     @products = generate_products_for_page(products)
   end
 
@@ -95,6 +96,11 @@ class ProductsController < ApplicationController
     product.product_images.destroy
     product.product_sizes.destroy
     product.destroy
+    redirect_to '/products/index'
+  end
+
+  def is_admin
+    @is_admin = User.find(session[:user_id]).admin == 'admin'
   end
 
   private
@@ -114,5 +120,4 @@ class ProductsController < ApplicationController
     end
     display
   end
-
 end

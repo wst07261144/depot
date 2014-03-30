@@ -17,9 +17,16 @@
               %dd
                 尺寸：
                 =product[:size]
-        %td(class="list_actions" width="300px")
-          =link_to '查看详情', products_path(product[:id])
-          =link_to '编辑', '/products/'+ product[:id].to_s + '/edit'
-          =link_to '删除', 'destroy/' + product[:id].to_s,:confirm => '确实要删除吗？',:method => :delete
-.right
-  =link_to '新建商品',new_products_path
+        -if @is_admin
+          %td(class="list_actions" width="300px")
+            =link_to '查看详情', products_path(product[:id])
+            =link_to '编辑', '/products/'+ product[:id].to_s + '/edit'
+            =link_to '删除', 'destroy/' + product[:id].to_s,:confirm => '确实要删除吗？',:method => :delete
+        -else
+          %td(class="list_actions" width="300px")
+            =link_to '查看详情', products_path(product[:id])
+            =link_to '加入购物车', '#'
+            =link_to '立即购买', '#'
+-if @is_admin
+  .right
+    =link_to '新建商品',new_products_path

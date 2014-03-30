@@ -28,11 +28,18 @@
       %h5
         数量:
         %input(style="width:70px;height:20px" )
-      %div(style="float:right; padding-right:40px")
-        .btn.btn-default
-          =link_to '编辑',"/products/#{@product.id}/edit"
-        .btn.btn-default
-          =link_to '删除', 'destroy/' + @product.id.to_s,:confirm => '确实要删除吗？',:method => :delete
+      -if @is_admin
+        %div(style="float:right; padding-right:40px")
+          .btn.btn-default
+            =link_to '编辑',"/products/#{@product.id}/edit"
+          .btn.btn-default
+            =link_to '删除', 'destroy/' + @product.id.to_s,:confirm => '确实要删除吗？',:method => :delete
+      -else
+        %div(style="float:right; padding-right:40px")
+          .btn.btn-default
+            =link_to '加入购物车',"#"
+          .btn.btn-default
+            =link_to '立即购买', '#'
 .container
   %br
   %div(style="background-color:lightblue")

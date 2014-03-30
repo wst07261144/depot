@@ -9,10 +9,8 @@ class SessionsController < ApplicationController
       sign_in (user)
       if user.admin == 'super'
         redirect_to :action => 'super_index', :controller => 'users'
-      elsif user.admin == 'admin'
-        redirect_to :action => 'index',:controller => 'products'
       else
-        redirect_to '#'
+        redirect_to :action => 'index',:controller => 'products'
       end
     else
       flash.now[:error] = '帐号或密码不正确'
