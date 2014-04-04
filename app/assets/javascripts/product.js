@@ -118,7 +118,7 @@ $(function(){
         })
         $.each(data.image_url,function(index,img){
             var new_input = $("#image .none").clone().removeClass('none')
-            new_input.children('input').val(img)
+            new_input.children( 'input').val(img)
             $('#image .none').before(new_input)
         })
 
@@ -132,5 +132,32 @@ $(function(){
 
     }
 })
+
+function judge_button_can_click(){
+    var color = $('input[name="color"]:checked').val()
+    var size = $('input[name="size"]:checked').val()
+    var num = $('#select_num input').val()
+    var item_null = (color != undefined && size != undefined && num != '' )
+    $('#shopping_cart').attr('disabled', !item_null)
+    $('#buy_now').attr('disabled', !item_null)
+}
+
+function add_to_shopping_cart(){
+    var color = $('input[name="color"]:checked').val()
+    var size = $('input[name="size"]:checked').val()
+    var num = $('#select_num input').val()
+    var price=$('#price').text().trim().substring(7).trim()
+    var data = {'color': color, 'size': size, 'num': num, 'price': price}
+    console.log(data)
+    $.ajax({
+        url: '/products/shopping_cart/' + window.location.pathname.substring(10),
+        type: 'POST',
+        data:data,
+        success:function(){
+//            window.location.href = 'http://www.jd.com'
+        },
+        error:function(){}
+    })
+}
 
 

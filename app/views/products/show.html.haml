@@ -9,25 +9,25 @@
       %h5
         =@product.title
       %br
-      %h4(style="background-color:red; height:100px;line-height:100px;text-align:center;color:white")
+      %h4#price(style="background-color:red; height:100px;line-height:100px;text-align:center;color:white")
         今日促销 ￥
         =@product.price
       %br
-      %h5
+      %h5#select_color
         选择颜色:
         %span
           -@color.each do |color|
-            %input(type="radio" name="color" value="#{color}")
+            %input(type="radio" name="color" onclick="judge_button_can_click()" value="#{color}")
               =color
-      %h5
+      %h5#select_size
         选择尺码:
         %span
           -@size.each do |size|
-            %input(type="radio" name="size" value="#{size}")
+            %input(type="radio" name="size" onclick="judge_button_can_click()" value="#{size}")
               = size
-      %h5
+      %h5#select_num
         数量:
-        %input(style="width:70px;height:20px" )
+        %input(style="width:70px;height:20px" onkeyup="judge_button_can_click()" )
       -if @is_admin
         %div(style="float:right; padding-right:40px")
           .btn.btn-default
@@ -36,10 +36,9 @@
             =link_to '删除', 'destroy/' + @product.id.to_s,:confirm => '确实要删除吗？',:method => :delete
       -else
         %div(style="float:right; padding-right:40px")
-          .btn.btn-default
-            =link_to '加入购物车',"#"
-          .btn.btn-default
-            =link_to '立即购买', '#'
+          .btn.btn-primary#shopping_cart(onclick="add_to_shopping_cart()" disabled = 'true' ) 加入购物车
+          .btn.btn-primary#buy_now(onclick="buy_it()" disabled = 'true' ) 立即购买
+
 .container
   %br
   %div(style="background-color:lightblue")

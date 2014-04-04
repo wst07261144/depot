@@ -19,6 +19,7 @@ Depot::Application.routes.draw do
   get 'products/boy/tops'=>'products#boy_tops'
   get 'products/boy/bottoms'=>'products#boy_bottoms'
   delete 'products/destroy/:id'=>'products#destroy'
+  post '/products/shopping_cart/:product_id'=>'products#shopping_cart'
 
   get 'users/super_index'=> 'users#super_index'
   get 'users/super_new'=> 'users#super_new'

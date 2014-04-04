@@ -103,6 +103,19 @@ class ProductsController < ApplicationController
     @is_admin = User.find(session[:user_id]).admin == 'admin'
   end
 
+  def shopping_cart
+    product = ShoppingCart.find_by(color: params[:color], size: params[:size],price: params[:price],
+                              user_id: session[:user_id],product_id: params[:product_id])
+    if product.nil?
+      @shopping_cart = ShoppingCart.create(color: params[:color], size: params[:size], num: params[:num],
+                    price: params[:price], user_id: session[:user_id],product_id: params[:product_id])
+      render text: 'ok'
+    else
+      product.update_attribute(:num, product.num + params[:num].to_i)
+      render text: 'ok'
+    end
+  end
+
   private
 
   def product_params
