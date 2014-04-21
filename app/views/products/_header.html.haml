@@ -7,5 +7,12 @@
         %span 你好，
         %span
           =@user
-          ,
-        =link_to '退出','/users/quit'
+          =link_to '退出','/users/quit'
+        .btn-group
+          %a.btn.btn-lg.dropdown-toggle(type="button" data-toggle="dropdown")
+            %span.caret
+          %ul.dropdown-menu
+            -if request.url != "http://localhost:3001/products/shopping_cart"
+              %li
+                %a(href="#" onclick="jump_to_shopping_cart()" )购物车
+

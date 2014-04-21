@@ -1,0 +1,33 @@
+=render 'header'
+%br
+%br
+.container
+  #shopping_products
+    -@products.each do |product|
+      .row
+        .col-md-12
+          .panel.panel-default
+            .panel-heading
+              .pull-right
+                %a(href='javascript:{}' onclick="down_qrcode('水杯')")
+                  立即购买
+                %a(href='javascript:{}' onclick="destroy_cloth_from_shopping_cart(#{product.id})")
+                  删除
+              %span.label(style="background-color: #428bca" )
+                =product.name
+            .panel-body
+              %div
+                %input(type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one(" )
+              %div(style="height:120px;width:150px;float:left" )
+                =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
+              %div(style="height:90px;padding-left:150px;;float:right")
+                %span 颜色: #{product.color}
+                %span 尺码: #{product.size}
+                %span 数量: #{product.num}
+                %span 单价: #{product.price}
+                %span 小计: #{product.price * product.num}
+  %span#select_all
+    %input(type="checkbox" name="checkbox" value="all" onclick="select_all()")全选
+    %span  合计
+    %button.btn.btn-primary 去结算
+

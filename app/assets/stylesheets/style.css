@@ -786,3 +786,19 @@
     width:42% ;
    padding-left: 30px;
 }
+
+.label-primary {
+    background-color: #428bca;
+}
+
+.panel {
+    margin-bottom: 10px;
+}
+
+.panel-default {
+    border-color: #dddddd;
+}
+
+.pull-right {
+    float: right !important;
+}

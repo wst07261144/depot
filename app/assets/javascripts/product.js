@@ -85,7 +85,8 @@ function change_service_header_style_to_active() {
 
 
 $(function(){
-    if (window.location.pathname.substring(20)!=''){
+    var path = window.location.pathname
+    if (path.substring(20)!='' && path.substring(0,20) == '/products/next_step/'){
        var product_id = window.location.pathname.substring(20);
        var data = JSON.parse( $('#data').text())
         $.each(data.color,function(index,col){
@@ -148,13 +149,12 @@ function add_to_shopping_cart(){
     var num = $('#select_num input').val()
     var price=$('#price').text().trim().substring(7).trim()
     var data = {'color': color, 'size': size, 'num': num, 'price': price}
-    console.log(data)
     $.ajax({
         url: '/products/shopping_cart/' + window.location.pathname.substring(10),
         type: 'POST',
         data:data,
         success:function(){
-//            window.location.href = 'http://www.jd.com'
+           window.location.href = 'http://localhost:3001/products/shopping_cart'
         },
         error:function(){}
     })

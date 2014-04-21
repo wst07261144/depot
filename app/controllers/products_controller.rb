@@ -103,17 +103,31 @@ class ProductsController < ApplicationController
     @is_admin = User.find(session[:user_id]).admin == 'admin'
   end
 
-  def shopping_cart
+  def add_shopping_cart
     product = ShoppingCart.find_by(color: params[:color], size: params[:size],price: params[:price],
                               user_id: session[:user_id],product_id: params[:product_id])
     if product.nil?
+      pro = Product.find(params[:product_id])
       @shopping_cart = ShoppingCart.create(color: params[:color], size: params[:size], num: params[:num],
-                    price: params[:price], user_id: session[:user_id],product_id: params[:product_id])
+                    price: params[:price], user_id: session[:user_id],product_id: params[:product_id],
+                    name: pro.title, img: pro.product_images.first.image_url)
       render text: 'ok'
     else
       product.update_attribute(:num, product.num + params[:num].to_i)
       render text: 'ok'
     end
+  end
+
+  def shopping_cart_index
+    @subject = '我的购物车'
+    @name = User.find(session[:user_id]).name
+    @products = ShoppingCart.all
+    #@products = ShoppingCart.where(user_id: session[:user_id])
+  end
+
+  def destroy_from_shopping_cart
+    ShoppingCart.find(params[:id]).destroy
+    render :text=> 'ok'
   end
 
   private
