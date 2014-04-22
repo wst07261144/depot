@@ -23,6 +23,8 @@ Depot::Application.routes.draw do
   get '/products/shopping_cart'=> 'products#shopping_cart_index'
   delete '/products/shopping_cart/:id'=> 'products#destroy_from_shopping_cart'
 
+  get '/products/buy'=> 'products#buy'
+
   get 'users/super_index'=> 'users#super_index'
   get 'users/super_new'=> 'users#super_new'
   get 'users/quit'=> 'users#quit'

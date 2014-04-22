@@ -91,11 +91,7 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    product = Product.find(params[:id])
-    product.product_colors.destroy
-    product.product_images.destroy
-    product.product_sizes.destroy
-    product.destroy
+    Product.find(params[:id]).destroy
     redirect_to '/products/index'
   end
 
@@ -128,6 +124,10 @@ class ProductsController < ApplicationController
   def destroy_from_shopping_cart
     ShoppingCart.find(params[:id]).destroy
     render :text=> 'ok'
+  end
+
+  def buy
+
   end
 
   private

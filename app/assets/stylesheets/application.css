@@ -125,12 +125,6 @@
    border-color: transparent #dedede;
 }
 
-
-
-
-
-
-
 .nav-sidebar > li.active > a:after {
    content: "";
    position: absolute;
@@ -158,10 +152,6 @@
    right: 10px;
    top: 50%;
    margin-top: -15px;
-}
-
-.modal-dialog {
-   width: 70%;
 }
 
 .demo-pointer {
@@ -321,10 +311,6 @@ pre {
    padding: 10px;
    font-size: 11px;
 }
-
-/*a { color: #000; }*/
-/*a:visited { color: #666; }*/
-/*a:hover { color: #fff; background-color:#000; }*/
 
 div.field, div.actions {
    margin-bottom: 10px;
