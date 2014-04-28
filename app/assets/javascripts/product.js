@@ -62,7 +62,8 @@ function save_settings(){
 }
 
 $(document).on("page:load", function () {
-    change_service_header_style_to_active()
+    change_service_header_style_to_active();
+
 });
 
 function change_service_header_style_to_active() {
@@ -76,6 +77,7 @@ function change_service_header_style_to_active() {
     $.each(['/products/index','/products/girl/tops','/products/girl/bottoms','/products/boy/tops','/products/boy/bottoms'],function(index,item){
         if(window.location.pathname == item){
            $('#' + url_and_id_mapping[window.location.pathname]).addClass('active')
+           init_scroll();
         }
         if(window.location.pathname != item && $("#" + url_and_id_mapping[item]).hasClass('active')){
            $('#' + url_and_id_mapping[item]).removeClass('active')
@@ -83,12 +85,19 @@ function change_service_header_style_to_active() {
     })
 }
 
+$(document).ready(function(){
+    if(window.location.pathname == '/products/index' || window.location.pathname == '/products/index/#'){
+        init_scroll();
+    }
+
+})
 
 $(function(){
     var path = window.location.pathname
     if (path.substring(20)!='' && path.substring(0,20) == '/products/next_step/'){
        var product_id = window.location.pathname.substring(20);
        var data = JSON.parse( $('#data').text())
+        console.log(data)
         $.each(data.color,function(index,col){
             if(col == '白色' || col == '黑色' || col == '黄色'||col=='红色' ||col== '粉色'){
                 $('#color a').each(function(index,el){
@@ -157,6 +166,39 @@ function add_to_shopping_cart(){
            window.location.href = 'http://localhost:3001/products/shopping_cart'
         },
         error:function(){}
+    })
+}
+
+//function check_file() {
+//    var file_component = document.getElementById("upload_file_user_info_file")
+//    var file_value = file_component.value;
+//    if (file_value === '') {
+//        alert("请选择图片")
+//        return false;
+//    }
+//    return true;
+//}
+//
+//$(window).ready(function () {
+//    $("#upload_excel_submit").click(function () {
+//        var form_value = $("#upload_file_user_info_file").val();
+//        if (!(form_value === '' || form_value.indexOf('xls') == -1)) {
+//            $("#upload_excel_submit").val("上传中，请勿打断！");
+//            setTimeout(function() {
+//                $("#upload_excel_submit").attr("disabled", 'disabled');
+//            },100);
+//            $("#upload_excel_close").hide();
+//        }
+//    });
+//});
+
+function init_scroll() {
+    if($('#scroll').height() > $(window).height() - $('#scroll').offset().top) {
+        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
+    }
+
+    $(window).resize(function(){
+        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
     })
 }
 

@@ -607,3 +607,13 @@
 .pull-right {
     float: right !important;
 }
+
+.scroll-y {
+    overflow-y: auto;
+}
+
+.scroll-x {
+    overflow-x: hidden;
+    position: relative;
+    z-index: 12;
+}

@@ -54,6 +54,7 @@ class ProductsController < ApplicationController
     @color = @product.product_colors.pluck(:color)
     @size = @product.product_sizes.pluck(:size)
     @image = @product.product_images.pluck(:image_url)
+    @images = @product.product_images.pluck(:image_url) - [@product.product_images.pluck(:image_url)[0]]
   end
 
   def edit
@@ -116,9 +117,9 @@ class ProductsController < ApplicationController
 
   def shopping_cart_index
     @subject = '我的购物车'
-    @name = User.find(session[:user_id]).name
-    @products = ShoppingCart.all
-    #@products = ShoppingCart.where(user_id: session[:user_id])
+    @user = User.find(session[:user_id]).name
+    #@products = ShoppingCart.all
+    @products = ShoppingCart.where(user_id: session[:user_id])
   end
 
   def destroy_from_shopping_cart
@@ -128,6 +129,14 @@ class ProductsController < ApplicationController
 
   def buy
 
+  end
+
+  def handle_img
+    require 'fileutils'
+    xls_tmp = params[:upload_file][:user_info_file]
+    xls_position = File.join('app/assets/images', session[:user_id].to_s + '_' + Time.now.to_i.to_s  + '_upload.png')
+    FileUtils.cp xls_tmp.path, xls_position
+    render text: 'ok'
   end
 
   private
