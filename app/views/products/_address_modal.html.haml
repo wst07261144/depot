@@ -5,6 +5,13 @@
         %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
         %h4.modal-title 填写收货信息
       .modal-body
+        -#-@addresses.each do |address|
+        -#  %input(type='radio')
+        -#  %span
+        -#    =address.name
+        -#    =address.phone
+        -#    =address.address
+
         .add-on
           收货人
           %input#name(type="text" name="name" onkeyup="check_save_button_for_order()" )

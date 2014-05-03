@@ -27,6 +27,7 @@ Depot::Application.routes.draw do
 
   post '/products/order'=> 'products#save_orders'
   post '/products/order/direct'=> 'products#save_order_direct'
+  post '/products/order/many' => 'products#save_ordes_many'
   get '/products/order_index'=> 'products#order_index'
 
   get '/products/buy'=> 'products#buy'

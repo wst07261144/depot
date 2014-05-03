@@ -18,6 +18,8 @@
             .panel-body
               %div
                 %input(type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one()")
+                .none
+                  %p #{product.id}
               %div(style="height:120px;width:150px;float:left" )
                 =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
               %div(style="height:90px;padding-left:150px;;float:right")
@@ -30,7 +32,7 @@
     %span#select_all
       %input(type="checkbox" name="checkbox" value="all" onclick="select_all()")全选
       %span  合计
-      %button.btn.btn-primary 提交订单
+      %a.btn.btn-primary#submit_order(onclick="submit_orders()" disabled="true" href='javascript:{}' data-toggle="modal" data-target="#modal-buy") 提交订单
   -else
     .text-center.alert.alert-danger
       %h3

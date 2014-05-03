@@ -2,34 +2,44 @@ function generate_order(){
     var name1 =  $("#name").val().trim()
     var phone1 = $("#phone").val().trim()
     var address1 = $("#address").val().trim()
-    if(localStorage.getItem('product_id_at_cart') == null){
+    if(localStorage.getItem('order_info') != null){
         data = JSON.parse(localStorage.getItem('order_info'))
         data['name'] = name1; data['phone'] = phone1; data['address'] = address1
         $.ajax({
             url: '/products/order/direct',
             type: 'POST',
             data: {orders: JSON.stringify(data)},
-            success:function(){
-                localStorage.removeItem('product_id_at_cart')
-                localStorage.removeItem('order_info')
-                window.location.href = '/products/order_index'
-            },
+            success:success_callback,
             error:function(){}
         })
 
-    }else{
+    }
+    if(localStorage.getItem('product_id_at_cart') != null){
         var data = {name: name1, phone: phone1, address: address1, shopping_cart_id: localStorage.getItem('product_id_at_cart')}
         $.ajax({
             url: '/products/order',
             type: 'POST',
             data: {orders: JSON.stringify(data)},
-            success:function(){
-                localStorage.removeItem('product_id_at_cart')
-                localStorage.removeItem('order_info')
-                window.location.href = '/products/order_index'
-            },
+            success:success_callback,
             error:function(){}
         })
+    }
+    if(localStorage.getItem('cart_ids') != null){
+        var data = {name: name1, phone: phone1, address: address1, cart_ids: localStorage.getItem('cart_ids')}
+        $.ajax({
+            url:'/products/order/many',
+            type: 'POST',
+            data:{orders :JSON.stringify(data)},
+            success:success_callback,
+            error:function(){}
+        })
+
+    }
+    function success_callback(){
+        localStorage.removeItem('product_id_at_cart')
+        localStorage.removeItem('order_info')
+        localStorage.removeItem('cart_ids')
+        window.location.href = '/products/order_index'
     }
 }
 

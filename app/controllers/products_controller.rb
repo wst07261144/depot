@@ -96,10 +96,6 @@ class ProductsController < ApplicationController
     redirect_to '/products/index'
   end
 
-  def is_admin
-    @is_admin = User.find(session[:user_id]).admin == 'admin'
-  end
-
   def add_shopping_cart
     product = ShoppingCart.find_by(color: params[:color], size: params[:size],price: params[:price],
                               user_id: session[:user_id],product_id: params[:product_id])
@@ -152,6 +148,21 @@ class ProductsController < ApplicationController
     render :text=>'ok'
   end
 
+  def save_ordes_many
+    orders = JSON.parse(params[:orders])
+    address = CustomerAddress.create(user_id: session[:user_id], name: orders['name'], phone: orders['phone'],
+                                     address: orders['address'])
+    JSON.parse(orders['cart_ids']).each do |id|
+      shopping_cart = ShoppingCart.find_by(id: id.to_i)
+
+      address.orders.create(user_id: session[:user_id], product_id: shopping_cart.product_id,name: shopping_cart.name,
+                            color: shopping_cart.color, num: shopping_cart.num, size: shopping_cart.size,
+                            price: shopping_cart.price, total_price: shopping_cart.num * shopping_cart.price,
+                            img: shopping_cart.img)
+    end
+    render :text=>'ok'
+  end
+
   def save_order_direct
     order = JSON.parse(params[:orders])
     address = CustomerAddress.create(user_id: session[:user_id], name: order['name'], phone: order['phone'],
@@ -164,12 +175,77 @@ class ProductsController < ApplicationController
   end
 
   def order_index
+    products = []
     @subject = '我的订单'
     @user = User.find_by(id:session[:user_id]).name
-    @products = Order.where(user_id: session[:user_id])
+    if !is_admin
+       Order.where(user_id: session[:user_id]).each do |order|
+         products.push(generate_order_items(order))
+       end
+      @products = products
+    end
+    if is_admin
+      my_orders = Order.all.group_by{|order| order.product_id}
+      @products = generate_order_admin1(my_orders)
+    end
+  end
+
+  def is_admin
+    @is_admin = User.find(session[:user_id]).admin == 'admin'
   end
 
   private
+
+  def generate_order_admin1(my_orders)
+    products = []
+    my_orders.keys.each_with_index do |order1,index|
+      orders = {}
+      order = Product.find_by(id: order1)
+      orders.merge!({name: order.title})
+      orders.merge!({img: order.product_images[0].image_url})
+      orders.merge!({product_id: order1})
+      orders.merge!({info: generate_order_admin2(my_orders,index)})
+      products.push(orders)
+    end
+    products
+  end
+
+  def generate_order_admin2(my_orders,index)
+    array=[]
+    my_orders.values[index].each do |item|
+      items = {}
+      address = CustomerAddress.find_by(id: item.customer_address_id)
+      items.merge!({receive: address.name})
+      items.merge!({phone: address.phone})
+      items.merge!({address: address.address})
+      items.merge!({color: item.color})
+      items.merge!({order_id: item.id})
+      items.merge!({num: item.num})
+      items.merge!({size: item.size})
+      items.merge!({price: item.price})
+      items.merge!({total_price: item.total_price})
+      array.push(items)
+    end
+    array
+  end
+
+  def generate_order_items(order)
+    orders = {}
+    address = CustomerAddress.find_by(id: order.customer_address_id)
+    orders.merge!({receive: address.name})
+    orders.merge!({phone: address.phone})
+    orders.merge!({address: address.address})
+    orders.merge!({color: order.color})
+    orders.merge!({name: order.name})
+    orders.merge!({num: order.num})
+    orders.merge!({img: order.img})
+    orders.merge!({product_id: order.product_id})
+    orders.merge!({size: order.size})
+    orders.merge!({price: order.price})
+    orders.merge!({order_id: order.id})
+    orders.merge!({total_price: order.total_price})
+    orders
+  end
 
   def product_params
     params.require(:product).permit(:title, :mian_liao, :logo, :pic_source, :season, :style, :hou_bao, :huo_hao, :price, :user_id)
