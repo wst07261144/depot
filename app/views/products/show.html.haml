@@ -34,8 +34,8 @@
             =link_to '删除', 'destroy/' + @product.id.to_s,:confirm => '确实要删除吗？',:method => :delete
       -else
         %div(style="float:right; padding-right:40px")
-          .btn.btn-primary#shopping_cart(onclick="add_to_shopping_cart()" disabled = 'true' ) 加入购物车
-          .btn.btn-primary#buy_now(onclick="buy_it()" disabled = 'true' ) 立即购买
+          %a.btn.btn-primary#shopping_cart(onclick="add_to_shopping_cart()" disabled = 'true' ) 加入购物车
+          %a.btn.btn-primary#buy_now(onclick="add_to_order('#{@product.id}','#{@product.title}','#{@image[0]}')" disabled = 'true'  href='javascript:{}' data-toggle="modal" data-target="#modal-buy") 立即购买
 
 .container
   %br
@@ -73,3 +73,4 @@
       =image_tag(t,:class => 'list_image')
     %br
 
+=render 'address_modal'

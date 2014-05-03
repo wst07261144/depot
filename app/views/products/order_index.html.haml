@@ -1,0 +1,26 @@
+=render 'header'
+%br
+%br
+.container
+  -if !@products.nil?
+    -@products.each do |product|
+      .row
+        .col-md-12
+          .panel.panel-default
+            .panel-heading
+              %span.label(style="background-color: #428bca" )
+                =product.name
+            .panel-body
+              %div(style="height:120px;width:150px;float:left" )
+                =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
+              %div(style="height:90px;padding-left:150px;;float:right")
+                %span 颜色: #{product.color}
+                %span 尺码: #{product.size}
+                %span 数量: #{product.num}
+                %span 单价: #{product.price}
+                %span 总价: #{product.total_price}
+  -if @products.nil?
+    .text-center.alert.alert-danger
+      %h3
+        您还没在该店铺购买过商品，
+        =link_to '请点击这里开始购买' ,'/products/index'

@@ -50,6 +50,3 @@ function destroy_cloth_from_shopping_cart(id){
 function jump_to_shopping_cart(){
     window.location.href = 'http://localhost:3001/products/shopping_cart'
 }
-
-
-

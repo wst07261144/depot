@@ -169,6 +169,9 @@ function add_to_shopping_cart(){
     })
 }
 
+
+
+
 //function check_file() {
 //    var file_component = document.getElementById("upload_file_user_info_file")
 //    var file_value = file_component.value;
@@ -201,5 +204,6 @@ function init_scroll() {
         $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
     })
 }
+
 
 

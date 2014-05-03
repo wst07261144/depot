@@ -25,6 +25,10 @@ Depot::Application.routes.draw do
 
   post '/products/shopping_cart'=> 'products#handle_img'
 
+  post '/products/order'=> 'products#save_orders'
+  post '/products/order/direct'=> 'products#save_order_direct'
+  get '/products/order_index'=> 'products#order_index'
+
   get '/products/buy'=> 'products#buy'
 
   get 'users/super_index'=> 'users#super_index'

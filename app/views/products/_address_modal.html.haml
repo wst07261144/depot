@@ -1,0 +1,27 @@
+.modal.fade#modal-buy(aria-labelledby="myModalLabel" role="dialog" tabindex="-1")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
+        %h4.modal-title 填写收货信息
+      .modal-body
+        .add-on
+          收货人
+          %input#name(type="text" name="name" onkeyup="check_save_button_for_order()" )
+        .add-on
+          电话
+          %input#phone(type="text" name="phone" onkeyup="check_save_button_for_order()")
+        .add-on
+          地址
+          %input#address(type="text" name="address" onkeyup="check_save_button_for_order()" )
+      .modal-footer
+        %a.btn.btn-default.btn-lg(href="#" data-dismiss="modal") 取消
+        %a.btn.btn-primary.btn-lg#confirm_buy(data-dismiss="modal" data-toggle="modal" href="#" onclick="generate_order()" disabled='true') 确认购买
+      -#.modal-header
+      -#  %button#upload_excel_close.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+      -#  %h4#myModalLabel.modal-title  批量上传
+      -#= form_for :upload_file, :html => {:multipart => true,:onsubmit=>"return check_file()",:method=>'post'} do |f|
+      -#  .modal-body
+      -#    = f.file_field :user_info_file
+      -#  .modal-footer
+      -#    = f.submit "上传", :class=>'btn btn-primary btn-block btn-lg', :id => 'upload_excel_submit'

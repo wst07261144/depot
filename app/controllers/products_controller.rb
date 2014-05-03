@@ -139,6 +139,36 @@ class ProductsController < ApplicationController
     render text: 'ok'
   end
 
+  def save_orders
+    order = JSON.parse(params[:orders])
+    address = CustomerAddress.create(user_id: session[:user_id], name: order['name'], phone: order['phone'],
+                           address: order['address'])
+    shopping_cart = ShoppingCart.find_by(id: order['shopping_cart_id'].to_i)
+
+    address.orders.create(user_id: session[:user_id], product_id: shopping_cart.product_id,name: shopping_cart.name,
+                          color: shopping_cart.color, num: shopping_cart.num, size: shopping_cart.size,
+                          price: shopping_cart.price, total_price: shopping_cart.num * shopping_cart.price,
+                          img: shopping_cart.img)
+    render :text=>'ok'
+  end
+
+  def save_order_direct
+    order = JSON.parse(params[:orders])
+    address = CustomerAddress.create(user_id: session[:user_id], name: order['name'], phone: order['phone'],
+                                     address: order['address'])
+    address.orders.create(user_id: session[:user_id], product_id: order['product_id'],name: order['title'],
+                          color: order['color'], num: order['num'], size: order['size'],
+                          price: order['price'], total_price: order['price'].to_i * order['num'].to_i,
+                          img: order['image'])
+    render :text=>'ok'
+  end
+
+  def order_index
+    @subject = '我的订单'
+    @user = User.find_by(id:session[:user_id]).name
+    @products = Order.where(user_id: session[:user_id])
+  end
+
   private
 
   def product_params

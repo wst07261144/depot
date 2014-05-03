@@ -25,4 +25,12 @@
         -else
           %td(class="list_actions" width="300px")
             =link_to '查看详情', products_path(product[:id])
-    -#-if @products.length == 0
+    -if @products.length == 0 && @is_admin
+      .text-center.alert.alert-danger
+        %h3
+          您还没有添加此类商品，
+          =link_to '请点击这里开始添加' ,'/products/new'
+    -if @products.length == 0 && !@is_admin
+      .text-center.alert.alert-danger
+        %h3
+          该店铺还没有添加此类服装，敬请期待！

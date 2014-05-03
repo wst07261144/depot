@@ -9,7 +9,7 @@
           .panel.panel-default
             .panel-heading
               .pull-right
-                %a(href='javascript:{}' data-toggle="modal" data-target="#modal-buy" onclick="down_qrcode('水杯')")
+                %a(href='javascript:{}' data-toggle="modal" data-target="#modal-buy" onclick="save_the_product_order(#{product.id})")
                   立即购买
                 %a(href='javascript:{}' onclick="destroy_cloth_from_shopping_cart(#{product.id})")
                   删除
@@ -30,38 +30,11 @@
     %span#select_all
       %input(type="checkbox" name="checkbox" value="all" onclick="select_all()")全选
       %span  合计
-      %button.btn.btn-primary 去结算
+      %button.btn.btn-primary 提交订单
   -else
     .text-center.alert.alert-danger
       %h3
         你的购物车还空空如也，
         =link_to '请点击这里选择' ,'/products/index'
 
--#.modal.fade#modal-buy(aria-labelledby="myModalLabel" role="dialog" tabindex="-1")
--#  .modal-dialog
--#    .modal-content
--#      .modal-header
--#        %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
--#        %h4.modal-title 填写收货信息
--#      .modal-body
--#        .add-on
--#          收货人
--#          %input(type="text" )
--#        .add-on
--#          电话
--#          %input(type="text" )
--#        .add-on
--#          地址
--#          %input(type="text" )
-
-      .modal-footer
-        %a(href="#" class="btn btn-default btn-lg" data-dismiss="modal") 取消
-        %a(class="btn btn-primary btn-lg" data-dismiss="modal" data-toggle="modal" href="#" id="select_action_number" disabled=true) 下一步
-      -#.modal-header
-      -#  %button#upload_excel_close.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
-      -#  %h4#myModalLabel.modal-title  批量上传
-      -#= form_for :upload_file, :html => {:multipart => true,:onsubmit=>"return check_file()",:method=>'post'} do |f|
-      -#  .modal-body
-      -#    = f.file_field :user_info_file
-      -#  .modal-footer
-      -#    = f.submit "上传", :class=>'btn btn-primary btn-block btn-lg', :id => 'upload_excel_submit'
+=render 'address_modal'
