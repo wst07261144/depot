@@ -43,18 +43,15 @@ function save_settings(){
     $('#sort .label.btn').each(function(index, el){
         sorts.push($(el).text().trim())
     })
-    $('#image input').each(function(){
-        if($(this).val().trim()){
-            images.push($(this).val().trim())
-        }
-    })
     var setting = {'color':colors,'image':images,'sort':sorts,'size':sizes,'id':window.location.pathname.substring(20)}
+    var setting = {'color':colors,'sort':sorts,'size':sizes,'id':window.location.pathname.substring(20)}
     $.ajax({
         url: '/products/pro_attr',
         type: 'POST',
         data: setting,
         success: function (data) {
-            window.location.href = '/products/index'
+              $('#save_setting').parent().addClass('none')
+              $('#add_img').removeClass('none')
         },
         error: function (err) {
         }
@@ -126,11 +123,6 @@ $(function(){
 
             }
         })
-        $.each(data.image_url,function(index,img){
-            var new_input = $("#image .none").clone().removeClass('none')
-            new_input.children( 'input').val(img)
-            $('#image .none').before(new_input)
-        })
 
         if(data.sort == '男士上装' || data.sort == '男士裤装' || data.sort == '女士上装'||data.sort=='女士裤装、裙装' ){
             $('#sort a').each(function(index ,el){
@@ -172,28 +164,28 @@ function add_to_shopping_cart(){
 
 
 
-//function check_file() {
-//    var file_component = document.getElementById("upload_file_user_info_file")
-//    var file_value = file_component.value;
-//    if (file_value === '') {
-//        alert("请选择图片")
-//        return false;
-//    }
-//    return true;
-//}
-//
-//$(window).ready(function () {
-//    $("#upload_excel_submit").click(function () {
-//        var form_value = $("#upload_file_user_info_file").val();
-//        if (!(form_value === '' || form_value.indexOf('xls') == -1)) {
-//            $("#upload_excel_submit").val("上传中，请勿打断！");
-//            setTimeout(function() {
-//                $("#upload_excel_submit").attr("disabled", 'disabled');
-//            },100);
-//            $("#upload_excel_close").hide();
-//        }
-//    });
-//});
+function check_file() {
+    var file_component = document.getElementById("upload_file_user_info_file")
+    var file_value = file_component.value;
+    if (file_value === '') {
+        alert("请选择图片")
+        return false;
+    }
+    return true;
+}
+
+$(window).ready(function () {
+    $("#upload_excel_submit").click(function () {
+        var form_value = $("#upload_file_user_info_file").val();
+        if (!(form_value === '' || form_value.indexOf('xls') == -1)) {
+            $("#upload_excel_submit").val("上传中，请勿打断！");
+            setTimeout(function() {
+                $("#upload_excel_submit").attr("disabled", 'disabled');
+            },100);
+            $("#upload_excel_close").hide();
+        }
+    });
+});
 
 function init_scroll() {
     if($('#scroll').height() > $(window).height() - $('#scroll').offset().top) {
@@ -202,6 +194,17 @@ function init_scroll() {
 
     $(window).resize(function(){
         $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
+    })
+}
+
+function delete_img_when_edit(img_name, index){
+    $.ajax({
+        url: '/products/image/' + img_name,
+        type: 'DELETE',
+        success:function(){
+            $('[index=' + index +']').remove()
+        },
+        error:function(){}
     })
 }
 

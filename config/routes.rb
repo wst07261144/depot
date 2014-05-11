@@ -12,6 +12,7 @@ Depot::Application.routes.draw do
   get 'products/next_step'=>'products#color_size_image'
   post 'products/pro_attr'=>'products#save_product_attr'
   get 'products/:id/edit/'=>'products#edit'
+
   get 'products/next_step/:id'=>'products#edit_color_size_image'
   post 'products/:id/edit'=>'products#update'
   get 'products/girl/tops'=>'products#girl_tops'
@@ -19,16 +20,19 @@ Depot::Application.routes.draw do
   get 'products/boy/tops'=>'products#boy_tops'
   get 'products/boy/bottoms'=>'products#boy_bottoms'
   delete 'products/destroy/:id'=>'products#destroy'
+  delete 'destroy/:id' => 'products#destroy'
   post '/products/shopping_cart/:product_id'=>'products#add_shopping_cart'
   get '/products/shopping_cart'=> 'products#shopping_cart_index'
   delete '/products/shopping_cart/:id'=> 'products#destroy_from_shopping_cart'
 
-  post '/products/shopping_cart'=> 'products#handle_img'
+  post '/products/next_step'=> 'products#handle_img'
+  post 'products/next_step/:product_id' => 'products#handle_img'
 
   post '/products/order'=> 'products#save_orders'
   post '/products/order/direct'=> 'products#save_order_direct'
   post '/products/order/many' => 'products#save_ordes_many'
   get '/products/order_index'=> 'products#order_index'
+  delete '/products/image/:img_name' => 'products#delete_img'
 
   get '/products/buy'=> 'products#buy'
 

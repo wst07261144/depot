@@ -30,8 +30,6 @@
           %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") XXXL
           %br
           %br
-          -#.col-xs-2
-          -#  %input.form-control(type="text")
           .col-xs-2.none
             %input.form-control(type="text" )
           %a.btn.btn-primary(href="javascript:{}" onclick="add_size_input(size)")
@@ -46,18 +44,31 @@
           %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 女士上装
           %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 女士裤装、裙装
       %hr
-    .form-group#image
-      %label.col-sm-2.control-label 商品图片:
-      .dl-horizontal.filter-dl
-        %dd
-          .col-xs-2.none
-            %input.form-control(type="text")
-          .col-xs-2
-            %a.btn.btn-primary(href="javascript:{}" onclick="add_image_input(image)")
-              添加图片
     %div(style="float:right" )
-      %a.btn.btn-default.btn-lg() 取消
       %a.btn.btn-primary.btn-lg#save_setting(href="#"  onclick="save_settings()") 保存
+
+    #add_img.container.none
+      .alert.alert-success.fade.in.text-center
+        %h4(style="padding:10px" ) 商品信息编辑成功，下面开始编辑商品图片
+      -JSON.parse(@data)['image_url'].each_with_index do |img,index|
+        .ok(style="block:inline"  index=index )
+          .col-md-4
+            .panel.panel-default
+              .panel-heading
+                .pull-right
+                  %a(href="javascript:{}" onclick="delete_img_when_edit('#{img}','#{index}')")删除
+              .panel-body
+                =image_tag(img,:class => 'list_image')
+              %br
+
+      %button#upload_excel_close.close(type="button" data-dismiss="modal" aria-hidden="true")
+      %h4  批量上传图片
+      = form_for :upload_file, :html => {:onsubmit=>"return check_file()",:method=>'post',} do |f|
+        = f.file_field :user_info_file, :multiple => true
+        = f.submit "上传", :class=>'btn btn-primary btn-block btn-lg', :id => 'upload_excel_submit'
+    #add_img_edit.none
+      .alert.alert-success.fade.in.text-center
+        %h4(style="padding:10px")上传成功！
 
 #data.none
   =@data

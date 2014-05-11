@@ -27,6 +27,7 @@ class ProductsController < ApplicationController
 
   def update
     product =  Product.find(params[:id])
+    session[:product_id] = params[:id]
     product.update_attributes(params[:product].permit!)
     redirect_to '/products/next_step/'+ (params[:id])
   end
@@ -130,8 +131,18 @@ class ProductsController < ApplicationController
   def handle_img
     require 'fileutils'
     xls_tmp = params[:upload_file][:user_info_file]
-    xls_position = File.join('app/assets/images', session[:user_id].to_s + '_' + Time.now.to_i.to_s  + '_upload.png')
-    FileUtils.cp xls_tmp.path, xls_position
+    xls_tmp.each_with_index do|img,index|
+      a = rand(100000).to_s
+      xls_position = File.join('app/assets/images', session[:user_id].to_s + '_' + a  + '_upload.png')
+      FileUtils.cp img.path, xls_position
+      ProductImage.create(product_id: session[:product_id], image_url: session[:user_id].to_s + '_' + a  + '_upload.png' )
+    end
+
+    redirect_to '/products/index'
+  end
+
+  def delete_img
+    ProductImage.find_by(product_id: session[:product_id], image_url: params[:img_name]+'.png').destroy
     render text: 'ok'
   end
 

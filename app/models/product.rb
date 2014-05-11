@@ -26,12 +26,6 @@ class Product < ActiveRecord::Base
     del = product.product_colors.pluck(:color) - data['color']
     ProductColor.delete_all(product_id: product_id,color: del) if del.length != 0
 
-    data['image'].each do |img|
-      product.product_images.find_by(image_url: img).nil? ?  product.product_images.create(image_url: img):{}
-    end
-    del_img = product.product_images.pluck(:image_url) - data['image']
-    ProductImage.delete_all(product_id: product_id, image_url: del_img) if del_img.length != 0
-
     data['size'].each do |size|
       product.product_sizes.find_by(size:size).nil? ? product.product_sizes.create(size: size):{}
     end
@@ -47,6 +41,5 @@ class Product < ActiveRecord::Base
     img = product.product_images.pluck(:image_url)
     {color:color,size:size,image_url:img ,product_id:product_id,sort:product.sort}.to_json
   end
-
 
 end
