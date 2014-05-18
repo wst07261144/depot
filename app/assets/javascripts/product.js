@@ -1,3 +1,79 @@
+$(window).ready(function () {
+    $("#upload_excel_submit").click(function () {
+        var form_value = $("#upload_file_user_info_file").val();
+        if (!(form_value === '' || form_value.indexOf('xls') == -1)) {
+            $("#upload_excel_submit").val("上传中，请勿打断！");
+            setTimeout(function() {
+                $("#upload_excel_submit").attr("disabled", 'disabled');
+            },100);
+            $("#upload_excel_close").hide();
+        }
+    });
+});
+
+$(document).ready(function(){
+    if(window.location.pathname == '/products/index' || window.location.pathname == '/products/index/#'){
+        init_scroll();
+    }
+
+})
+
+$(function(){
+    var path = window.location.pathname
+    if (path.substring(20)!='' && path.substring(0,20) == '/products/next_step/'){
+        var product_id = window.location.pathname.substring(20);
+        var data = JSON.parse( $('#data').text())
+        console.log(data)
+        $.each(data.color,function(index,col){
+            if(col == '白色' || col == '黑色' || col == '黄色'||col=='红色' ||col== '粉色'){
+                $('#color a').each(function(index,el){
+                    if($(el).text().trim() == col ){
+                        $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
+                    }
+                })
+            }else{
+                var new_input = $("#color .none").clone().removeClass('none')
+                new_input.children('input').val(col)
+                $('#color .none').before(new_input)
+
+            }
+        })
+        $.each(data.size,function(index,size){
+            if(size == 'S' || size == 'L' || size == 'XL'||size=='XXL' ||size== 'XXXL'){
+                $('#size a').each(function(index ,el){
+                    if($(el).text().trim() == size ){
+                        $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
+                    }
+                })
+            }else{
+                var new_input = $("#size .none").clone().removeClass('none')
+                new_input.children('input').val(col)
+                $('#size .none').before(new_input)
+
+            }
+        })
+
+        if(data.sort == '男士上装' || data.sort == '男士裤装' || data.sort == '女士上装'||data.sort=='女士裤装、裙装' ){
+            $('#sort a').each(function(index ,el){
+                if($(el).text().trim() == data.sort ){
+                    $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
+                }
+            })
+        }
+
+    }
+})
+
+function init_scroll() {
+    if($('#scroll').height() > $(window).height() - $('#scroll').offset().top) {
+        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
+    }
+
+    $(window).resize(function(){
+        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
+    })
+}
+
 function add_color_input(){
     var new_input = $("#color .none").clone().removeClass('none')
     $('#color .none').before(new_input)
@@ -20,7 +96,6 @@ function select_color(el){
         $(el).removeClass('btn').removeClass('btn-primary').addClass('label-blank')
     }
 }
-
 
 function save_settings(){
     var colors=[],sorts=[],images=[],sizes=[];
@@ -82,59 +157,6 @@ function change_service_header_style_to_active() {
     })
 }
 
-$(document).ready(function(){
-    if(window.location.pathname == '/products/index' || window.location.pathname == '/products/index/#'){
-        init_scroll();
-    }
-
-})
-
-$(function(){
-    var path = window.location.pathname
-    if (path.substring(20)!='' && path.substring(0,20) == '/products/next_step/'){
-       var product_id = window.location.pathname.substring(20);
-       var data = JSON.parse( $('#data').text())
-        console.log(data)
-        $.each(data.color,function(index,col){
-            if(col == '白色' || col == '黑色' || col == '黄色'||col=='红色' ||col== '粉色'){
-                $('#color a').each(function(index,el){
-                    if($(el).text().trim() == col ){
-                        $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
-                    }
-                })
-            }else{
-                var new_input = $("#color .none").clone().removeClass('none')
-                new_input.children('input').val(col)
-                $('#color .none').before(new_input)
-
-            }
-        })
-        $.each(data.size,function(index,size){
-            if(size == 'S' || size == 'L' || size == 'XL'||size=='XXL' ||size== 'XXXL'){
-                $('#size a').each(function(index ,el){
-                    if($(el).text().trim() == size ){
-                        $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
-                    }
-                })
-            }else{
-                var new_input = $("#size .none").clone().removeClass('none')
-                new_input.children('input').val(col)
-                $('#size .none').before(new_input)
-
-            }
-        })
-
-        if(data.sort == '男士上装' || data.sort == '男士裤装' || data.sort == '女士上装'||data.sort=='女士裤装、裙装' ){
-            $('#sort a').each(function(index ,el){
-                if($(el).text().trim() == data.sort ){
-                    $(el).removeClass('label-blank').addClass('btn').addClass('btn-primary')
-                }
-            })
-        }
-
-    }
-})
-
 function judge_button_can_click(){
     var color = $('input[name="color"]:checked').val()
     var size = $('input[name="size"]:checked').val()
@@ -161,9 +183,6 @@ function add_to_shopping_cart(){
     })
 }
 
-
-
-
 function check_file() {
     var file_component = document.getElementById("upload_file_user_info_file")
     var file_value = file_component.value;
@@ -174,35 +193,23 @@ function check_file() {
     return true;
 }
 
-$(window).ready(function () {
-    $("#upload_excel_submit").click(function () {
-        var form_value = $("#upload_file_user_info_file").val();
-        if (!(form_value === '' || form_value.indexOf('xls') == -1)) {
-            $("#upload_excel_submit").val("上传中，请勿打断！");
-            setTimeout(function() {
-                $("#upload_excel_submit").attr("disabled", 'disabled');
-            },100);
-            $("#upload_excel_close").hide();
-        }
-    });
-});
-
-function init_scroll() {
-    if($('#scroll').height() > $(window).height() - $('#scroll').offset().top) {
-        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
-    }
-
-    $(window).resize(function(){
-        $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
-    })
-}
-
 function delete_img_when_edit(img_name, index){
     $.ajax({
         url: '/products/image/' + img_name,
         type: 'DELETE',
         success:function(){
             $('[index=' + index +']').remove()
+        },
+        error:function(){}
+    })
+}
+
+function delete_order(order_id, admin) {
+    $.ajax({
+        url: '/products/orders/' + order_id,
+        type: 'DELETE',
+        success:function(){
+           $('#' + order_id).remove()
         },
         error:function(){}
     })

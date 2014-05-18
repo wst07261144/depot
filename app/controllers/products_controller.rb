@@ -88,7 +88,7 @@ class ProductsController < ApplicationController
   def boy_bottoms
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '男士下装')
+    products = Product.where(sort: '男士裤装')
     @products = generate_products_for_page(products)
   end
 
@@ -190,15 +190,21 @@ class ProductsController < ApplicationController
     @subject = '我的订单'
     @user = User.find_by(id:session[:user_id]).name
     if !is_admin
-       Order.where(user_id: session[:user_id]).each do |order|
+       Order.where(user_id: session[:user_id], user_delete: nil).each do |order|
          products.push(generate_order_items(order))
        end
       @products = products
     end
     if is_admin
-      my_orders = Order.all.group_by{|order| order.product_id}
+      my_orders = Order.where(admin_delete: nil).group_by{|order| order.product_id}
       @products = generate_order_admin1(my_orders)
     end
+  end
+
+  def delete_order
+    Order.find_by(id: params[:order_id]).update(user_delete: 'true') if User.find_by(id: session[:user_id]).admin == nil
+    Order.find_by(id: params[:order_id]).update(admin_delete: 'true') if User.find_by(id: session[:user_id]).admin == 'admin'
+    render text: 'ok'
   end
 
   def is_admin
