@@ -1,33 +1,32 @@
 =render 'header'
 %br
 %br
-.container
-
+.container#scroll
   -if @products.length != 0
     -@products.each do |product|
-      .row( id="#{product[:order_id]}")
-        .col-md-12
-          .panel.panel-default
-            .panel-heading
-              .pull-right
-                %a(href='javascript:{}'onclick="delete_order('#{product[:order_id]}', '#{@is_admin}')")  删除
-              %span.label(style="background-color: #428bca" )
-                =product[:name]
-            .panel-body
-              %div(style="height:120px;width:150px;float:left" )
-                =link_to(image_tag(src="#{product[:img]}",width: 120), "/products.#{product[:product_id]}")
-              %div
-                %table.table.table-bordered
-                  %tr
-                    %th(style="width:8%") 收货人
-                    %th(style="width:10%") 电话
-                    %th(style="width:10%") 收货地址
-                    %th(style="width:8%") 颜色
-                    %th(style="width:8%") 尺码
-                    %th(style="width:8%") 数量
-                    %th(style="width:8%") 单价
-                    %th(style="width:10%") 总价
-                  -if !@is_admin
+      -if (!@is_admin && User.find(session[:user_id]).admin != 'super')
+        .row( id="order_#{product[:order_id]}")
+          .col-md-12
+            .panel.panel-default
+              .panel-heading
+                .pull-right
+                  %a(href='javascript:{}'onclick="delete_orders('#{product[:order_id]}', 'user')")  删除
+                %span.label(style="background-color: #428bca" )
+                  =product[:name]
+              .panel-body
+                %div(style="height:120px;width:150px;float:left" )
+                  =link_to(image_tag(src="#{product[:img]}",width: 120), "/products.#{product[:product_id]}")
+                %div
+                  %table.table.table-bordered
+                    %tr
+                      %th(style="width:8%") 收货人
+                      %th(style="width:10%") 电话
+                      %th(style="width:10%") 收货地址
+                      %th(style="width:8%") 颜色
+                      %th(style="width:8%") 尺码
+                      %th(style="width:8%") 数量
+                      %th(style="width:8%") 单价
+                      %th(style="width:10%") 总价
                     %tr
                       %th  #{product[:receive]}
                       %th  #{product[:phone]}
@@ -37,17 +36,39 @@
                       %th  #{product[:num]}
                       %th  #{product[:price]}
                       %th  #{product[:total_price]}
-                  -else
-                    -product[:info].each do |pro|
-                      %tr
-                        %th  #{pro[:receive]}
-                        %th  #{pro[:phone]}
-                        %th  #{pro[:address]}
-                        %th  #{pro[:color]}
-                        %th  #{pro[:size]}
-                        %th  #{pro[:num]}
-                        %th  #{pro[:price]}
-                        %th  #{pro[:total_price]}
+      -else
+        .row( id="product_#{product[:product_id]}")
+          .col-md-12
+            .panel.panel-default
+              .panel-heading
+                .pull-right
+                  %a(href='javascript:{}'onclick="delete_orders('#{product[:product_id]}', 'admin')") 删除
+                %span.label(style="background-color: #428bca" )
+                  =product[:name]
+              .panel-body
+                %div(style="height:120px;width:150px;float:left" )
+                  =link_to(image_tag(src="#{product[:img]}",width: 120), "/products.#{product[:product_id]}")
+                %div
+                  %table.table.table-bordered
+                    %tr
+                      %th(style="width:8%") 收货人
+                      %th(style="width:10%") 电话
+                      %th(style="width:10%") 收货地址
+                      %th(style="width:8%") 颜色
+                      %th(style="width:8%") 尺码
+                      %th(style="width:8%") 数量
+                      %th(style="width:8%") 单价
+                      %th(style="width:10%") 总价
+                      -product[:info].each do |pro|
+                        %tr
+                          %th  #{pro[:receive]}
+                          %th  #{pro[:phone]}
+                          %th  #{pro[:address]}
+                          %th  #{pro[:color]}
+                          %th  #{pro[:size]}
+                          %th  #{pro[:num]}
+                          %th  #{pro[:price]}
+                          %th  #{pro[:total_price]}
 
   -if @products.length == 0
     .text-center.alert.alert-danger

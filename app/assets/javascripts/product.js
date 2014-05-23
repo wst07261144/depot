@@ -12,10 +12,15 @@ $(window).ready(function () {
 });
 
 $(document).ready(function(){
-    if(window.location.pathname == '/products/index' || window.location.pathname == '/products/index/#'){
-        init_scroll();
+    init_scroll();
+    if(window.location.pathname.indexOf('/products/orders/')!= -1) {
+        var order = localStorage.order_condition
+        if(order){
+            $('.btn-group.btn-group-0 a').each(function(index,el){
+                $(el).text().trim() == order ? $(el).addClass('active') : $(el).removeClass('active')
+            })
+        }
     }
-
 })
 
 $(function(){
@@ -72,6 +77,13 @@ function init_scroll() {
     $(window).resize(function(){
         $('#scroll').css('height',$(window).height() - $('#scroll').offset().top +'px');
     })
+}
+
+function change_order_for_index(el) {
+    if(!$(el).hasClass('active')) {
+         localStorage.order_condition = $(el).text().trim()
+         window.location.href = '/products/orders/' + $(el).text().trim();
+    }
 }
 
 function add_color_input(){
@@ -204,15 +216,28 @@ function delete_img_when_edit(img_name, index){
     })
 }
 
-function delete_order(order_id, admin) {
-    $.ajax({
-        url: '/products/orders/' + order_id,
-        type: 'DELETE',
-        success:function(){
-           $('#' + order_id).remove()
-        },
-        error:function(){}
-    })
+function delete_orders(order_or_product_id, admin) {
+    console.log('123')
+    if(admin == 'user'){
+        $.ajax({
+            url: '/products/order/' + order_or_product_id,
+            type: 'DELETE',
+            success:function(){
+                $('#order_' + order_or_product_id).remove()
+            },
+            error:function(){}
+        })
+    } else {
+        $.ajax({
+            url: '/products/orders/' + order_or_product_id,
+            type: 'DELETE',
+            success:function(){
+                $('#product_' + order_or_product_id).remove()
+            },
+            error:function(){}
+        })
+    }
+
 }
 
 

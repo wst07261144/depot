@@ -2,10 +2,21 @@ class ProductsController < ApplicationController
   before_action :is_admin
 
   def index
+
     @subject = '商品列表'
     @user = User.find_by(id:session[:user_id]).name
-    products = Product.all
+    if params[:item].blank? || params[:item] == '按更新时间'
+      products = Product.all.order(created_at: :desc)
+    elsif params[:item] == '按价格'
+      products = Product.all.order(price: :asc)
+    else
+      products = generate_product_by_order
+    end
     @products = generate_products_for_page(products)
+  end
+
+  def sort_by_user
+    render :index
   end
 
   def new
@@ -16,7 +27,6 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
-    @product.user_id = session[:user_id]
     if @product.save
       session[:product_id] = @product.id
       redirect_to '/products/next_step'
@@ -124,10 +134,6 @@ class ProductsController < ApplicationController
     render :text=> 'ok'
   end
 
-  def buy
-
-  end
-
   def handle_img
     require 'fileutils'
     xls_tmp = params[:upload_file][:user_info_file]
@@ -189,21 +195,27 @@ class ProductsController < ApplicationController
     products = []
     @subject = '我的订单'
     @user = User.find_by(id:session[:user_id]).name
-    if !is_admin
-       Order.where(user_id: session[:user_id], user_delete: nil).each do |order|
+    if (!@is_admin && User.find(session[:user_id]).admin != 'super')
+       Order.where(user_id: session[:user_id]).where.not(user_delete: true).each do |order|
          products.push(generate_order_items(order))
        end
       @products = products
     end
-    if is_admin
-      my_orders = Order.where(admin_delete: nil).group_by{|order| order.product_id}
+    if (is_admin || User.find(session[:user_id]).admin == 'super')
+      my_orders = Order.where.not(admin_delete: true).group_by{|order| order.product_id}
       @products = generate_order_admin1(my_orders)
     end
   end
 
   def delete_order
-    Order.find_by(id: params[:order_id]).update(user_delete: 'true') if User.find_by(id: session[:user_id]).admin == nil
-    Order.find_by(id: params[:order_id]).update(admin_delete: 'true') if User.find_by(id: session[:user_id]).admin == 'admin'
+    Order.find_by(id: params[:order_id]).update(user_delete: 'true')
+    render text: 'ok'
+  end
+
+  def delete_orders
+    Order.where(product_id: params[:product_id]).each do |product|
+      product.update_attribute(:admin_delete, true)
+    end
     render text: 'ok'
   end
 
@@ -278,5 +290,20 @@ class ProductsController < ApplicationController
       display.push({id: product.id, title:product.title, logo:product.logo, size: size.join(' '),color: color.join(' '), image_url: img[0]})
     end
     display
+  end
+
+  def generate_product_by_order
+    order = Hash[Order.all.group('product_id').count.sort_by{|k, v| v}.reverse]
+    order_ids = order.keys
+    ids = Product.all.order(created_at: :desc).pluck(:id)
+    ids.each do |id|
+      order_ids.push(id) if !order_ids.include? (id)
+    end
+    products = []
+    order_ids.each do |product_id|
+      #order_id 是按订单排好序的product_id
+      products.push(Product.find_by(id: product_id))
+    end
+    products
   end
 end

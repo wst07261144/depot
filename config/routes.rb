@@ -33,7 +33,10 @@ Depot::Application.routes.draw do
   post '/products/order/many' => 'products#save_ordes_many'
   get '/products/order_index'=> 'products#order_index'
   delete '/products/image/:img_name' => 'products#delete_img'
-  delete '/products/orders/:order_id/' => 'products#delete_order'
+  delete '/products/order/:order_id/' => 'products#delete_order'
+  delete '/products/orders/:product_id/' => 'products#delete_orders'
+
+  get '/products/orders/:item' => 'products#index'
 
   get '/products/buy'=> 'products#buy'
 
