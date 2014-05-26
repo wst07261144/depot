@@ -17,6 +17,9 @@
               %dd
                 尺寸：
                 =product[:size]
+              %dd
+                价格：
+                =product[:price]
         -if (@is_admin || User.find(session[:user_id]).admin == 'super')
           %td(class="list_actions" width="300px")
             =link_to '查看详情', products_path(product[:id])

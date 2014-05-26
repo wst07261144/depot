@@ -130,15 +130,23 @@ function save_settings(){
     $('#sort .label.btn').each(function(index, el){
         sorts.push($(el).text().trim())
     })
-    var setting = {'color':colors,'image':images,'sort':sorts,'size':sizes,'id':window.location.pathname.substring(20)}
+
     var setting = {'color':colors,'sort':sorts,'size':sizes,'id':window.location.pathname.substring(20)}
     $.ajax({
         url: '/products/pro_attr',
         type: 'POST',
         data: setting,
         success: function (data) {
-              $('#save_setting').parent().addClass('none')
-              $('#add_img').removeClass('none')
+            console.log(data)
+            if(data == 'ok'){
+                $('#error').addClass('none')
+                $('#save_setting').parent().addClass('none')
+                $('#add_img').removeClass('none')
+            }
+            if(data == 'error'){
+                $('#error').removeClass('none')
+            }
+
         },
         error: function (err) {
         }

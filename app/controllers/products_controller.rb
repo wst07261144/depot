@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   def index
 
     @subject = '商品列表'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     if params[:item].blank? || params[:item] == '按更新时间'
       products = Product.all.order(created_at: :desc)
     elsif params[:item] == '按价格'
@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
   def new
     @subject = '创建新商品'
     @product = Product.new
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
   end
 
   def create
@@ -43,24 +43,28 @@ class ProductsController < ApplicationController
   end
 
   def color_size_image
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
     @subject = '设置商品属性'
   end
 
   def edit_color_size_image
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
     @subject = '编辑商品属性'
     @data = Product.fetch_edit_data(params[:id])
   end
 
   def save_product_attr
-    Product.save_product_attrs(session[:product_id]||params[:id], params)
-    render :text=>'ok'
+    if params['color'].blank? || params['size'].blank? || params['sort'].blank?
+      render :text=>'error'
+    else
+      Product.save_product_attrs(session[:product_id]||params[:id], params)
+      render :text=>'ok'
+    end
   end
 
   def show
     @subject = '商品详情'
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
     @product = Product.find params[:format]
     @color = @product.product_colors.pluck(:color)
     @size = @product.product_sizes.pluck(:size)
@@ -70,34 +74,34 @@ class ProductsController < ApplicationController
 
   def edit
     @subject = '编辑商品'
-    @user= User.find(session[:user_id]).name
+    @name= User.find(session[:user_id]).name
     @product =  Product.find(params[:id])
   end
 
   def girl_tops
     @subject = '商品列表'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     products = Product.where(sort: '女士上装')
     @products = generate_products_for_page(products)
   end
 
   def boy_tops
     @subject = '商品列表'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     products = Product.where( sort: '男士上装')
     @products = generate_products_for_page(products)
   end
 
   def girl_bottoms
     @subject = '商品列表'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     products = Product.where(sort: '女士下装')
     @products = generate_products_for_page(products)
   end
 
   def boy_bottoms
     @subject = '商品列表'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     products = Product.where(sort: '男士裤装')
     @products = generate_products_for_page(products)
   end
@@ -124,7 +128,7 @@ class ProductsController < ApplicationController
 
   def shopping_cart_index
     @subject = '我的购物车'
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
     #@products = ShoppingCart.all
     @products = ShoppingCart.where(user_id: session[:user_id])
   end
@@ -194,7 +198,7 @@ class ProductsController < ApplicationController
   def order_index
     products = []
     @subject = '我的订单'
-    @user = User.find_by(id:session[:user_id]).name
+    @name = User.find_by(id:session[:user_id]).name
     if (!@is_admin && User.find(session[:user_id]).admin != 'super')
        Order.where(user_id: session[:user_id]).where.not(user_delete: true).each do |order|
          products.push(generate_order_items(order))
@@ -287,7 +291,7 @@ class ProductsController < ApplicationController
       color = product.product_colors.pluck(:color)
       size = product.product_sizes.pluck(:size)
       img = product.product_images.pluck(:image_url)
-      display.push({id: product.id, title:product.title, logo:product.logo, size: size.join(' '),color: color.join(' '), image_url: img[0]})
+      display.push({id: product.id, price: product.price, title:product.title, logo:product.logo, size: size.join(' '),color: color.join(' '), image_url: img[0]})
     end
     display
   end

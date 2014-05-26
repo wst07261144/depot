@@ -1,6 +1,6 @@
 =render 'header'
 %br
-.container(style="width:70%" )
+.container#scroll(style="width:70%" )
   %div#setting
     .form-group#color
       %label.col-sm-2.control-label 商品颜色:
@@ -49,8 +49,10 @@
           %a.label.label-blank(href="javascript:{}" onclick="select_color(this)") 女士裤装、裙装
       %hr
   %div(style="padding-left:250px" )
-    %a.btn.btn-primary.btn-lg#save_setting(href="#"  onclick="save_settings()") 保 存
-
+    %a.btn.btn-primary.btn-lg#save_setting(href="javascript:{}"  onclick="save_settings()") 保 存
+  #error.container.none(style="width:80%" )
+    .alert.alert-danger.fade.in.text-center
+      %h4(style="padding:10px" ) 商品信息保存失败，请将信息设置完整
 
   #add_img.container.none(style="width:80%" )
     .alert.alert-success.fade.in.text-center

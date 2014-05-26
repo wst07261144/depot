@@ -20,6 +20,8 @@ class UsersController < ApplicationController
   end
 
   def super_new
+    @name = User.find(session[:user_id]).name
+    @subject = '管理员新建用户'
     @user = User.new
   end
 
@@ -34,6 +36,8 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @name = User.find(session[:user_id]).name
+    @subject = '管理员编辑用户'
     @user = User.find(params[:format])
   end
 
@@ -44,7 +48,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).destroy
-    redirectto '/users/super_index'
+    redirect_to '/users/super_index'
   end
 
   def quit

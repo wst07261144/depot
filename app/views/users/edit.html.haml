@@ -1,3 +1,4 @@
+=render '/products/header'
 %div(class="row" style="padding-top:60px" )
   %div(class="span6 offset3")
     = form_for(@user, url: '/users/update/'+@user.id.to_s) do |f|
