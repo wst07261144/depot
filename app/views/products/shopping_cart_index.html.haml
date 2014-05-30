@@ -17,12 +17,12 @@
                 =product.name
             .panel-body
               %div
-                %input(type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one()")
+                %input(style="float:left;margin-top:50px" type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one()")
                 .none
                   %p #{product.id}
-              %div(style="height:120px;width:150px;float:left" )
+              %div(style="height:120px;width:150px;float:left;padding-left:20px" )
                 =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
-              %div(style="height:90px;padding-left:150px;;float:right")
+              %div(style="height:90px;float:right;padding-top:50px")
                 %span 颜色: #{product.color}
                 %span 尺码: #{product.size}
                 %span 数量: #{product.num}
