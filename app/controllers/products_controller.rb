@@ -209,7 +209,7 @@ class ProductsController < ApplicationController
     @subject = '我的购物车'
     @name = User.find(session[:user_id]).name
     #@products = ShoppingCart.all
-    @products = ShoppingCart.where(user_id: session[:user_id])
+    @products = ShoppingCart.where(user_id: session[:user_id]).order(created_at: :desc)
   end
 
   def destroy_from_shopping_cart

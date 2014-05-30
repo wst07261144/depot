@@ -1,8 +1,11 @@
 $(document).ready(function(){
-    if(window.location.pathname == "/products/shopping_cart"){
+    if(window.location.pathname.indexOf("/products/shopping_cart") != -1) {
         $('#select_all input').click()
     }
+    init_scroll();
+    change_service_header_style_to_active();
 })
+
 function select_all(){
     if($('#select_all input[type=checkbox]:checked').length == 1){
         var select_cloth = $("#shopping_products input[type=checkbox][name=checkbox]")
@@ -14,6 +17,7 @@ function select_all(){
         $("#shopping_products input[type=checkbox][name=checkbox]").each(function(index,item){
             $(item).prop("checked", false);
         });
+        $("#select_all :contains('合计')").text('合计：0 元  合计物品：0 件')
     }
     check_submit_order_button_status()
 }

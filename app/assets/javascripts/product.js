@@ -11,11 +11,6 @@ $(window).ready(function () {
     });
 });
 
-$(document).ready(function(){
-    init_scroll();
-    change_service_header_style_to_active();
-})
-
 function handle_order_button_css(order) {
     if(order){
         $('.btn-group.btn-group-0 a').each(function(index,el){
