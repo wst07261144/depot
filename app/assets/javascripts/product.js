@@ -13,22 +13,22 @@ $(window).ready(function () {
 
 $(document).ready(function(){
     init_scroll();
-    if(window.location.pathname.indexOf('/products/orders/')!= -1) {
-        var order = localStorage.order_condition
-        if(order){
-            $('.btn-group.btn-group-0 a').each(function(index,el){
-                $(el).text().trim() == order ? $(el).addClass('active') : $(el).removeClass('active')
-            })
-        }
-    }
+    change_service_header_style_to_active();
 })
+
+function handle_order_button_css(order) {
+    if(order){
+        $('.btn-group.btn-group-0 a').each(function(index,el){
+            $(el).text().trim() == order ? $(el).addClass('active') : $(el).removeClass('active')
+        })
+    }
+}
 
 $(function(){
     var path = window.location.pathname
     if (path.substring(20)!='' && path.substring(0,20) == '/products/next_step/'){
         var product_id = window.location.pathname.substring(20);
         var data = JSON.parse( $('#data').text())
-        console.log(data)
         $.each(data.color,function(index,col){
             if(col == '白色' || col == '黑色' || col == '黄色'||col=='红色' ||col== '粉色'){
                 $('#color a').each(function(index,el){
@@ -79,10 +79,103 @@ function init_scroll() {
     })
 }
 
+function generate_ids(el) {
+    var ids = []
+    $('[product_id]').each(function(index,el) {
+        ids.push($(el).attr('product_id'))
+    })
+    return ids
+}
+
 function change_order_for_index(el) {
     if(!$(el).hasClass('active')) {
-         localStorage.order_condition = $(el).text().trim()
-         window.location.href = '/products/orders/' + $(el).text().trim();
+       var order =  $(el).text().trim()
+       var ids = generate_ids(el)
+        $.ajax({
+            url: '/products/all/order',
+            type: 'POST',
+            data: {ids: ids, order: $(el).text().trim()},
+            success: function (data) {
+                $("table").replaceWith($(data).find("table"))
+                handle_order_button_css(order)
+            },
+            error: function (err) {
+            }
+        });
+    }
+
+}
+
+function change_order_for_boy_tops(el) {
+    if(!$(el).hasClass('active')) {
+        var ids = generate_ids(el)
+        var order =  $(el).text().trim()
+        $.ajax({
+            url: '/products/boy/tops/order',
+            type: 'POST',
+            data: {ids: ids, order: $(el).text().trim()},
+            success: function (data) {
+                $("table").replaceWith($(data).find("table"))
+                handle_order_button_css(order)
+            },
+            error: function (err) {
+            }
+        });
+
+    }
+}
+
+function change_order_for_girl_tops(el) {
+    if(!$(el).hasClass('active')) {
+        var ids = generate_ids(el)
+        var order =  $(el).text().trim()
+        $.ajax({
+            url: '/products/girl/tops/order',
+            type: 'POST',
+            data: {ids: ids, order: $(el).text().trim()},
+            success: function (data) {
+                $("table").replaceWith($(data).find("table"))
+                handle_order_button_css(order)
+            },
+            error: function (err) {
+            }
+        });
+    }
+}
+
+function change_order_for_boy_bottoms(el) {
+    if(!$(el).hasClass('active')) {
+        var ids = generate_ids(el)
+        var order =  $(el).text().trim()
+        $.ajax({
+            url: '/products/boy/bottoms/order',
+            type: 'POST',
+            data: {ids: ids, order: $(el).text().trim()},
+            success: function (data) {
+                $("table").replaceWith($(data).find("table"))
+                handle_order_button_css(order)
+            },
+            error: function (err) {
+            }
+        });
+    }
+}
+
+function change_order_for_girl_bottoms(el) {
+    if(!$(el).hasClass('active')) {
+        var ids = generate_ids(el)
+        var order =  $(el).text().trim()
+        $.ajax({
+            url: '/products/girl/bottoms/order',
+            type: 'POST',
+            data: {ids: ids, order: $(el).text().trim()},
+            success: function (data) {
+                $("table").replaceWith($(data).find("table"))
+                handle_order_button_css(order)
+            },
+            error: function (err) {
+            }
+        });
     }
 }
 
@@ -137,7 +230,6 @@ function save_settings(){
         type: 'POST',
         data: setting,
         success: function (data) {
-            console.log(data)
             if(data == 'ok'){
                 $('#error').addClass('none')
                 $('#save_setting').parent().addClass('none')
@@ -167,11 +259,10 @@ function change_service_header_style_to_active() {
     '/products/boy/bottoms': 'boy_bottoms'
     }
     $.each(['/products/index','/products/girl/tops','/products/girl/bottoms','/products/boy/tops','/products/boy/bottoms'],function(index,item){
-        if(window.location.pathname == item){
+        if(window.location.pathname.indexOf(item) != -1){
            $('#' + url_and_id_mapping[window.location.pathname]).addClass('active')
            init_scroll();
-        }
-        if(window.location.pathname != item && $("#" + url_and_id_mapping[item]).hasClass('active')){
+        }else{
            $('#' + url_and_id_mapping[item]).removeClass('active')
         }
     })
@@ -225,7 +316,6 @@ function delete_img_when_edit(img_name, index){
 }
 
 function delete_orders(order_or_product_id, admin) {
-    console.log('123')
     if(admin == 'user'){
         $.ajax({
             url: '/products/order/' + order_or_product_id,

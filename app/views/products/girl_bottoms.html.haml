@@ -3,5 +3,17 @@
 %br
 .container
   .row
+    .btn-group.btn-group-0
+      %a.btn.btn-default.btn-default-alt.active(type="button" onclick="change_order_for_girl_bottoms(this)")
+        %i.icon-wrench
+        按更新时间
+    .btn-group.btn-group-0
+      %a.btn.btn-default.btn-default-alt(type="button" onclick="change_order_for_girl_bottoms(this)")
+        %i.icon-wrench
+        按价格
+    .btn-group.btn-group-0
+      %a.btn.btn-default.btn-default-alt(type="button" onclick="change_order_for_girl_bottoms(this)")
+        %i.icon-wrench
+        按销量
     =render 'sort_list'
     =render 'clothing_list'

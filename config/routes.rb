@@ -37,6 +37,11 @@ Depot::Application.routes.draw do
   delete '/products/orders/:product_id/' => 'products#delete_orders'
 
   get '/products/orders/:item' => 'products#index'
+  post '/products/girl/tops/order' => 'products#girl_tops_order'
+  post '/products/boy/tops/order' => 'products#boy_tops_order'
+  post '/products/girl/bottoms/order' => 'products#girl_bottoms_order'
+  post '/products/boy/bottoms/order' => 'products#boy_bottoms_order'
+  post '/products/all/order' => 'products#index_order'
 
   get '/products/buy'=> 'products#buy'
 

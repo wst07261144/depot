@@ -5,18 +5,26 @@ class ProductsController < ApplicationController
 
     @subject = '商品列表'
     @name = User.find_by(id:session[:user_id]).name
-    if params[:item].blank? || params[:item] == '按更新时间'
-      products = Product.all.order(created_at: :desc)
-    elsif params[:item] == '按价格'
-      products = Product.all.order(price: :asc)
-    else
-      products = generate_product_by_order
-    end
+    products = Product.all.order(created_at: :desc)
     @products = generate_products_for_page(products)
   end
 
-  def sort_by_user
-    render :index
+  def index_order
+    order = params['order']
+    ids = params['ids']
+    if order == '按销量'
+      ids = generate_product_by_sell_num(params['ids'])
+      products = []
+      ids.each do |id|
+        products.push(Product.find_by(id: id))
+      end
+    elsif order == '按价格'
+      products = Product.where(id: ids).order(price: :asc)
+    else
+      products = Product.where(id: ids).order(created_at: :desc)
+    end
+    @products = generate_products_for_page(products)
+    render partial:'clothing_list'
   end
 
   def new
@@ -85,11 +93,47 @@ class ProductsController < ApplicationController
     @products = generate_products_for_page(products)
   end
 
+  def girl_tops_order
+    order = params['order']
+    ids = params['ids']
+    if order == '按销量'
+      ids = generate_product_by_sell_num(params['ids'])
+      products = []
+      ids.each do |id|
+        products.push(Product.find_by(id: id))
+      end
+    elsif order == '按价格'
+      products = Product.where(id: ids).order(price: :asc)
+    else
+      products = Product.where(id: ids).order(created_at: :desc)
+    end
+    @products = generate_products_for_page(products)
+    render partial:'clothing_list'
+  end
+
   def boy_tops
     @subject = '商品列表'
     @name = User.find_by(id:session[:user_id]).name
     products = Product.where( sort: '男士上装')
     @products = generate_products_for_page(products)
+  end
+
+  def boy_tops_order
+    order = params['order']
+    ids = params['ids']
+    if order == '按销量'
+      ids = generate_product_by_sell_num(params['ids'])
+      products = []
+      ids.each do |id|
+        products.push(Product.find_by(id: id))
+      end
+    elsif order == '按价格'
+      products = Product.where(id: ids).order(price: :asc)
+    else
+      products = Product.where(id: ids).order(created_at: :desc)
+    end
+    @products = generate_products_for_page(products)
+    render partial:'clothing_list'
   end
 
   def girl_bottoms
@@ -99,11 +143,46 @@ class ProductsController < ApplicationController
     @products = generate_products_for_page(products)
   end
 
+  def girl_bottoms_order
+    order = params['order']
+    ids = params['ids']
+    if order == '按销量'
+      products = []
+      ids.each do |id|
+        products.push(Product.find_by(id: id))
+      end
+    elsif order == '按价格'
+      products = Product.where(id: ids).order(price: :asc)
+    else
+      products = Product.where(id: ids).order(created_at: :desc)
+    end
+    @products = generate_products_for_page(products)
+    render partial:'clothing_list'
+  end
+
   def boy_bottoms
     @subject = '商品列表'
     @name = User.find_by(id:session[:user_id]).name
     products = Product.where(sort: '男士裤装')
     @products = generate_products_for_page(products)
+  end
+
+  def boy_bottoms_order
+    order = params['order']
+    ids = params['ids']
+    if order == '按销量'
+      ids = generate_product_by_sell_num(params['ids'])
+      products = []
+      ids.each do |id|
+        products.push(Product.find_by(id: id))
+      end
+    elsif order == '按价格'
+      products = Product.where(id: ids).order(price: :asc)
+    else
+      products = Product.where(id: ids).order(created_at: :desc)
+    end
+    @products = generate_products_for_page(products)
+    render partial:'clothing_list'
   end
 
   def destroy
@@ -287,27 +366,26 @@ class ProductsController < ApplicationController
   def generate_products_for_page(products)
     display = []
     products.each do |product|
-
       color = product.product_colors.pluck(:color)
       size = product.product_sizes.pluck(:size)
       img = product.product_images.pluck(:image_url)
-      display.push({id: product.id, price: product.price, title:product.title, logo:product.logo, size: size.join(' '),color: color.join(' '), image_url: img[0]})
+      num = Order.where(product_id: product.id).count
+      display.push({id: product.id, price: product.price, sell_num: num , title:product.title, logo:product.logo, size: size.join(' '),color: color.join(' '), image_url: img[0]})
     end
     display
   end
 
-  def generate_product_by_order
+  def generate_product_by_sell_num(ids)
     order = Hash[Order.all.group('product_id').count.sort_by{|k, v| v}.reverse]
+
     order_ids = order.keys
-    ids = Product.all.order(created_at: :desc).pluck(:id)
+    array_after_sort = []
+    order_ids.each do |id|
+      array_after_sort.push(id) if ids.map{|t| t.to_i}.include?(id)
+    end
     ids.each do |id|
-      order_ids.push(id) if !order_ids.include? (id)
+      array_after_sort.push(id.to_i) if !array_after_sort.include?(id.to_i)
     end
-    products = []
-    order_ids.each do |product_id|
-      #order_id 是按订单排好序的product_id
-      products.push(Product.find_by(id: product_id))
-    end
-    products
+    array_after_sort
   end
 end
