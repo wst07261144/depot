@@ -78,6 +78,7 @@ class ProductsController < ApplicationController
     @size = @product.product_sizes.pluck(:size)
     @image = @product.product_images.pluck(:image_url)
     @images = @product.product_images.pluck(:image_url) - [@product.product_images.pluck(:image_url)[0]]
+    @addresses = CustomerAddress.where(user_id: session[:user_id])
   end
 
   def edit
@@ -208,8 +209,8 @@ class ProductsController < ApplicationController
   def shopping_cart_index
     @subject = '我的购物车'
     @name = User.find(session[:user_id]).name
-    #@products = ShoppingCart.all
     @products = ShoppingCart.where(user_id: session[:user_id]).order(created_at: :desc)
+    @addresses = CustomerAddress.where(user_id: session[:user_id])
   end
 
   def destroy_from_shopping_cart
@@ -237,7 +238,7 @@ class ProductsController < ApplicationController
 
   def save_orders
     order = JSON.parse(params[:orders])
-    address = CustomerAddress.create(user_id: session[:user_id], name: order['name'], phone: order['phone'],
+    address = CustomerAddress.find_or_create_by(user_id: session[:user_id], name: order['name'], phone: order['phone'],
                            address: order['address'])
     shopping_cart = ShoppingCart.find_by(id: order['shopping_cart_id'].to_i)
 
@@ -250,7 +251,7 @@ class ProductsController < ApplicationController
 
   def save_ordes_many
     orders = JSON.parse(params[:orders])
-    address = CustomerAddress.create(user_id: session[:user_id], name: orders['name'], phone: orders['phone'],
+    address = CustomerAddress.find_or_create_by(user_id: session[:user_id], name: orders['name'], phone: orders['phone'],
                                      address: orders['address'])
     JSON.parse(orders['cart_ids']).each do |id|
       shopping_cart = ShoppingCart.find_by(id: id.to_i)
@@ -265,7 +266,7 @@ class ProductsController < ApplicationController
 
   def save_order_direct
     order = JSON.parse(params[:orders])
-    address = CustomerAddress.create(user_id: session[:user_id], name: order['name'], phone: order['phone'],
+    address = CustomerAddress.find_or_create_by(user_id: session[:user_id], name: order['name'], phone: order['phone'],
                                      address: order['address'])
     address.orders.create(user_id: session[:user_id], product_id: order['product_id'],name: order['title'],
                           color: order['color'], num: order['num'], size: order['size'],
@@ -279,13 +280,13 @@ class ProductsController < ApplicationController
     @subject = '我的订单'
     @name = User.find_by(id:session[:user_id]).name
     if (!@is_admin && User.find(session[:user_id]).admin != 'super')
-       Order.where(user_id: session[:user_id]).where.not(user_delete: true).each do |order|
+       Order.where(user_id: session[:user_id],user_delete: nil).each do |order|
          products.push(generate_order_items(order))
        end
       @products = products
     end
     if (is_admin || User.find(session[:user_id]).admin == 'super')
-      my_orders = Order.where.not(admin_delete: true).group_by{|order| order.product_id}
+      my_orders = Order.where(admin_delete: nil).group_by{|order| order.product_id}
       @products = generate_order_admin1(my_orders)
     end
   end

@@ -4,7 +4,14 @@ function generate_order(){
     var address1 = $("#address").val().trim()
     if(localStorage.getItem('order_info') != null){
         data = JSON.parse(localStorage.getItem('order_info'))
-        data['name'] = name1; data['phone'] = phone1; data['address'] = address1
+        if(!$('#add_address').hasClass('none')){
+            data['name'] = name1; data['phone'] = phone1; data['address'] = address1
+        }else{
+            var selected = $('#old_address input:checked')
+            data['name'] = selected.next().text().trim();
+            data['phone'] = selected.next().next().text().trim();
+            data['address'] = selected.next().next().next().text().trim()
+        }
         $.ajax({
             url: '/products/order/direct',
             type: 'POST',
@@ -15,7 +22,13 @@ function generate_order(){
 
     }
     if(localStorage.getItem('product_id_at_cart') != null){
-        var data = {name: name1, phone: phone1, address: address1, shopping_cart_id: localStorage.getItem('product_id_at_cart')}
+        if(!$('#add_address').hasClass('none')){
+            var data = {name: name1, phone: phone1, address: address1, shopping_cart_id: localStorage.getItem('product_id_at_cart')}
+        }else{
+            var selected = $('#old_address input:checked')
+            var data = {name: selected.next().text().trim(), phone: selected.next().next().text().trim(), address: selected.next().next().next().text().trim(), shopping_cart_id: localStorage.getItem('product_id_at_cart')}
+
+        }
         $.ajax({
             url: '/products/order',
             type: 'POST',
@@ -25,6 +38,12 @@ function generate_order(){
         })
     }
     if(localStorage.getItem('cart_ids') != null){
+        if($('#add_address').hasClass('none')){
+            var selected = $('#old_address input:checked')
+            name1 = selected.next().text().trim()
+            phone1 = selected.next().next().text().trim()
+            address1 = selected.next().next().next().text().trim()
+        }
         var data = {name: name1, phone: phone1, address: address1, cart_ids: localStorage.getItem('cart_ids')}
         $.ajax({
             url:'/products/order/many',
@@ -48,7 +67,12 @@ function save_the_product_order(product_id){
 }
 
 function check_save_button_for_order(){
-    $('#confirm_buy').attr('disabled', !check_status_of_save_button_for_order());
+
+    if($('#add_address').hasClass('none')){
+        $('#confirm_buy').attr('disabled', $('#old_address input:checked').length == 0);
+    }else{
+        $('#confirm_buy').attr('disabled', !check_status_of_save_button_for_order());
+    }
 }
 
 
@@ -76,4 +100,11 @@ function add_to_order(id,name,image){
     var price=$('#price').text().trim().substring(7).trim()
     var data = {'color': color, 'size': size, 'num': num, 'price': price,'product_id': id, 'title': name, 'image':image}
     localStorage.setItem('order_info', JSON.stringify(data))
+}
+
+function use_new_address() {
+    $('#button').addClass('none')
+    $('#old_address').addClass('none')
+    $('#add_address').removeClass('none')
+
 }

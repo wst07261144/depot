@@ -3,24 +3,30 @@
     .modal-content
       .modal-header
         %button(type="button" class="close" data-dismiss="modal" aria-hidden="true")×
-        %h4.modal-title 填写收货信息
+        %h4.modal-title 选择收货地址
       .modal-body
-        -#-@addresses.each do |address|
-        -#  %input(type='radio')
-        -#  %span
-        -#    =address.name
-        -#    =address.phone
-        -#    =address.address
-
-        .add-on
-          收货人
-          %input#name(type="text" name="name" onkeyup="check_save_button_for_order()" )
-        .add-on
-          电话
-          %input#phone(type="text" name="phone" onkeyup="check_save_button_for_order()")
-        .add-on
-          地址
-          %input#address(type="text" name="address" onkeyup="check_save_button_for_order()" )
+        #old_address
+          -@addresses.each do |address|
+            %input(type='radio' name="old_address" onclick="check_save_button_for_order()")
+            %span(name='name')
+              =address.name
+            %span(name='phone')
+              =address.phone
+            %span(name='address')
+              =address.address
+            %br
+        %br
+        %button#button.btn-primary.btn(onclick="use_new_address()" ) 使用新地址
+        #add_address.none
+          .add-on
+            收货人
+            %input#name(type="text" name="name" onkeyup="check_save_button_for_order()" )
+          .add-on
+            电话
+            %input#phone(type="text" name="phone" onkeyup="check_save_button_for_order()")
+          .add-on
+            地址
+            %input#address(type="text" name="address" onkeyup="check_save_button_for_order()" )
       .modal-footer
         %a.btn.btn-default.btn-lg(href="#" data-dismiss="modal") 取消
         %a.btn.btn-primary.btn-lg#confirm_buy(data-dismiss="modal" data-toggle="modal" href="#" onclick="generate_order()" disabled='true') 确认购买
