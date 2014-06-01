@@ -106,5 +106,30 @@ function use_new_address() {
     $('#button').addClass('none')
     $('#old_address').addClass('none')
     $('#add_address').removeClass('none')
+}
 
+function change_order_status(order_id, el) {
+    $.ajax({
+        url:'/products/order_status',
+        type: 'POST',
+        data:{order_id: order_id,order_status :'已发货'},
+        success:function(){
+            $(el).next().before('等待买家确认收货 ')
+            $(el).remove()
+        },
+        error:function(){}
+    })
+}
+
+function confirm_orders(order_id,el) {
+    $.ajax({
+        url:'/products/confirm_status',
+        type: 'POST',
+        data:{order_id: order_id,confirm_status :'确认收货'},
+        success:function(){
+            $(el).next().before('交易成功')
+            $(el).remove()
+        },
+        error:function(){}
+    })
 }

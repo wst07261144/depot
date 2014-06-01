@@ -26,6 +26,8 @@
                 -if (@is_admin || User.find(session[:user_id]).admin == 'super')
                   %li
                     %a(href = "/products/order_index") 订单管理
+                  %li
+                    %a(href = "/products/scan_orders") 已完成订单
                 -else
                   %li
                     %a(href="/products/order_index")我的订单

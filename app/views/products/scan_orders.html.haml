@@ -11,12 +11,9 @@
               .panel-heading
                 .pull-right
                   -if product[:order_status].nil?
-                    %span 卖家未发货
-                  -elsif product[:order_status] == '已发货'
-                    -if product[:confirm_status].nil?
-                      %a(href='javascript:{}'onclick="confirm_orders(#{product[:order_id]},this)") 确认收货
-                    -else
-                      %span 交易成功
+                    卖家未发货
+                  -else
+                    =product[:order_status]
                   %a(href='javascript:{}'onclick="delete_orders('#{product[:order_id]}', 'user')")  删除
                 %span.label(style="background-color: #428bca" )
                   =product[:name]
@@ -44,18 +41,11 @@
                       %th  #{product[:price]}
                       %th  #{product[:total_price]}
       -else
-        .row( id="order_#{product[:order_id]}")
+        .row( id="product_#{product[:product_id]}")
           .col-md-12
             .panel.panel-default
               .panel-heading
                 .pull-right
-                  -if product[:order_status].nil?
-                    %a(href='javascript:{}'onclick="change_order_status(#{product[:order_id]},this)") 已发货
-                  -elsif product[:order_status] == '已发货'
-                    -if product[:confirm_status] == '确认收货'
-                      交易成功
-                    -else
-                      等待买家确认收货
                   %a(href='javascript:{}'onclick="delete_orders('#{product[:product_id]}', 'admin')") 删除
                 %span.label(style="background-color: #428bca" )
                   =product[:name]
@@ -73,16 +63,16 @@
                       %th(style="width:8%") 数量
                       %th(style="width:8%") 单价
                       %th(style="width:10%") 总价
-
-                    %tr
-                      %th  #{product[:receive]}
-                      %th  #{product[:phone]}
-                      %th  #{product[:address]}
-                      %th  #{product[:color]}
-                      %th  #{product[:size]}
-                      %th  #{product[:num]}
-                      %th  #{product[:price]}
-                      %th  #{product[:total_price]}
+                      -product[:info].each do |pro|
+                        %tr
+                          %th  #{pro[:receive]}
+                          %th  #{pro[:phone]}
+                          %th  #{pro[:address]}
+                          %th  #{pro[:color]}
+                          %th  #{pro[:size]}
+                          %th  #{pro[:num]}
+                          %th  #{pro[:price]}
+                          %th  #{pro[:total_price]}
 
   -if @products.length == 0
     .text-center.alert.alert-danger

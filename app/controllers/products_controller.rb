@@ -277,18 +277,47 @@ class ProductsController < ApplicationController
 
   def order_index
     products = []
-    @subject = '我的订单'
     @name = User.find_by(id:session[:user_id]).name
     if (!@is_admin && User.find(session[:user_id]).admin != 'super')
-       Order.where(user_id: session[:user_id],user_delete: nil).each do |order|
+      @subject = '我的订单'
+       Order.where(user_id: session[:user_id],user_delete: nil).order(created_at: :desc).each do |order|
          products.push(generate_order_items(order))
        end
+    end
+    if (is_admin || User.find(session[:user_id]).admin == 'super')
+      @subject = '订单管理'
+      Order.where(admin_delete: nil).order(created_at: :desc).each do |order|
+        products.push(generate_order_items(order))
+      end
+    end
+    @products = products
+  end
+
+  def confirm_order_status
+    Order.find_by(id: params['order_id']).update_attribute(:confirm_status, '确认收货')
+    render :text => 'ok'
+  end
+
+  def change_order_status
+    Order.find_by(id: params['order_id']).update_attribute(:order_status, '已发货')
+    render :text => 'ok'
+  end
+
+  def scan_orders
+    products = []
+    @name = User.find_by(id:session[:user_id]).name
+    @subject = '已完成订单'
+    if (!@is_admin && User.find(session[:user_id]).admin != 'super')
+      Order.where(user_id: session[:user_id],user_delete: nil, order_status: '已发货', confirm_status: '确认收货').each do |order|
+        products.push(generate_order_items(order))
+      end
       @products = products
     end
     if (is_admin || User.find(session[:user_id]).admin == 'super')
-      my_orders = Order.where(admin_delete: nil).group_by{|order| order.product_id}
+      my_orders = Order.where(admin_delete: nil, order_status: '已发货', confirm_status: '确认收货').group_by{|order| order.product_id}
       @products = generate_order_admin1(my_orders)
     end
+
   end
 
   def delete_order
@@ -357,6 +386,8 @@ class ProductsController < ApplicationController
     orders.merge!({price: order.price})
     orders.merge!({order_id: order.id})
     orders.merge!({total_price: order.total_price})
+    orders.merge!({order_status: order.order_status})
+    orders.merge!({confirm_status: order.confirm_status})
     orders
   end
 

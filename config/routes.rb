@@ -42,6 +42,9 @@ Depot::Application.routes.draw do
   post '/products/girl/bottoms/order' => 'products#girl_bottoms_order'
   post '/products/boy/bottoms/order' => 'products#boy_bottoms_order'
   post '/products/all/order' => 'products#index_order'
+  post '/products/order_status'=> 'products#change_order_status'
+  post '/products/confirm_status'=> 'products#confirm_order_status'
+  get '/products/scan_orders' => 'products#scan_orders'
 
   get '/products/buy'=> 'products#buy'
 

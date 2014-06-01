@@ -8,9 +8,42 @@ cn:
              password_confirmation: ""
              question: "忘记密码问题"
              answer: "忘记密码答案"
+           product:
+             title: "货品名称"
+             mian_liao: "面料"
+             logo: '货品品牌'
+             pic_source: '主图来源'
+             season: "发布季节"
+             style: "商品风格"
+             hou_bao: "商品厚薄"
+             huo_hao: "商品货号"
+             price: "商品价格"
 
          errors:
                  models:
+                   product:
+                    attributes:
+                      title:
+                        blank: "不能为空"
+                      mian_liao:
+                        blank: "不能为空"
+                      logo:
+                        blank: "不能为空"
+                      pic_source:
+                        blank: "不能为空"
+                      season:
+                        blank: "不能为空"
+                      style:
+                        blank: "不能为空"
+                      hou_bao:
+                        blank: "不能为空"
+                      huo_hao:
+                        blank: "不能为空"
+                      price:
+                        blank: "不能为空"
+                        not_a_number: '必须为数字'
+
+
                    user:
                      attributes:
                        name:
@@ -32,3 +65,4 @@ cn:
                        email:
                          blank: "不能为空"
                          invalid: '格式不正确'
+
