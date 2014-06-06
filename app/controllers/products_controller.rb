@@ -2,7 +2,6 @@ class ProductsController < ApplicationController
   before_action :is_admin
 
   def index
-
     @subject = '商品列表'
     @name = User.find_by(id:session[:user_id]).name
     products = Product.all.order(created_at: :desc)
@@ -140,7 +139,7 @@ class ProductsController < ApplicationController
   def girl_bottoms
     @subject = '商品列表'
     @name = User.find_by(id:session[:user_id]).name
-    products = Product.where(sort: '女士下装')
+    products = Product.where(sort: '女士裤装、裙装')
     @products = generate_products_for_page(products)
   end
 
