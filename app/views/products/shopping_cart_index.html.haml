@@ -9,19 +9,28 @@
           .panel.panel-default
             .panel-heading
               .pull-right
-                %a(href='javascript:{}' data-toggle="modal" data-target="#modal-buy" onclick="save_the_product_order(#{product.id})")
-                  立即购买
+                -if !Product.find_by(id: product.product_id).nil?
+                  %a(href='javascript:{}' data-toggle="modal" data-target="#modal-buy" onclick="save_the_product_order(#{product.id})")
+                    立即购买
+                -else
+                  该商品已下架
                 %a(href='javascript:{}' onclick="destroy_cloth_from_shopping_cart(#{product.id})")
                   删除
               %span.label(style="background-color: #428bca" )
                 =product.name
             .panel-body
               %div
-                %input(style="float:left;margin-top:50px" type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one()")
+                -if !Product.find_by(id: product.product_id).nil?
+                  %input(style="float:left;margin-top:50px" type="checkbox" name="checkbox" value="#{product.price}+#{product.num}" onclick="select_one()")
+                -else
+                  %input(style="float:left;margin-top:50px" type="checkbox" disabled='true' name="checkbox" value="0+0" )
                 .none
                   %p #{product.id}
               %div(style="height:120px;width:150px;float:left;padding-left:20px" )
-                =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
+                -if !Product.find_by(id: product.product_id).nil?
+                  =link_to(image_tag(src="#{product.img}",width: 120), "/products.#{product.product_id}")
+                -else
+                  =image_tag(src="#{product.img}",width: 120)
               %div(style="height:90px;float:right;padding-top:50px")
                 %span 颜色: #{product.color}
                 %span 尺码: #{product.size}

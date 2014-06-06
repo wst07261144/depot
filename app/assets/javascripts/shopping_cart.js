@@ -10,7 +10,9 @@ function select_all(){
     if($('#select_all input[type=checkbox]:checked').length == 1){
         var select_cloth = $("#shopping_products input[type=checkbox][name=checkbox]")
         select_cloth.each(function(index,item){
-            $(item).prop("checked", true);
+            if(!$(item).attr('disabled')){
+                $(item).prop("checked", true);
+            }
         });
         $("#select_all :contains('合计')").text('合计：' + statistics_select_cloth_price_and_num()[0] + '元  合计物品：'+ statistics_select_cloth_price_and_num()[1] + '件')
     } else {

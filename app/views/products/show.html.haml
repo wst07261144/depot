@@ -26,7 +26,7 @@
       %h5#select_num
         数量:
         %input(style="width:70px;height:20px" onkeyup="judge_button_can_click()" )
-      -if @is_admin
+      -if (@is_admin || User.find(session[:user_id]).admin == 'super')
         %div(style="float:right; padding-right:40px")
           .btn.btn-default
             =link_to '编辑',"/products/#{@product.id}/edit"
