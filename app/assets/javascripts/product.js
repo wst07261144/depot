@@ -229,6 +229,7 @@ function save_settings(){
                 $('#error').addClass('none')
                 $('#save_setting').parent().addClass('none')
                 $('#add_img').removeClass('none')
+                $('.add_img').removeClass('none')
             }
             if(data == 'error'){
                 $('#error').removeClass('none')
