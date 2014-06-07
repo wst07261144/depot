@@ -332,7 +332,8 @@ class ProductsController < ApplicationController
   end
 
   def is_admin
-    @is_admin = User.find(session[:user_id]).admin == 'admin'
+    @is_admin = (User.find(session[:user_id]).admin == 'admin')
+    @is_super = (User.find(session[:user_id]).admin == 'super')
   end
 
   private

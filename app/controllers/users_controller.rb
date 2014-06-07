@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :is_admin, only: [:super_index]
 
   def new
     @user = User.new
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def super_index
-    @user = User.find(session[:user_id]).name
+    @name = User.find(session[:user_id]).name
     @subject = '管理员用户列表'
     @users = User.where(admin: 'admin')
   end
@@ -57,6 +58,10 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def is_admin
+    @is_admin = (User.find(session[:user_id]).admin == 'admin')
+    @is_super = (User.find(session[:user_id]).admin == 'super')
+  end
   private
 
   def user_params

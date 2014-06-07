@@ -14,16 +14,16 @@
               %a.btn.btn-lg.dropdown-toggle(type="button" data-toggle="dropdown")
                 %span.caret
               %ul.dropdown-menu
-                -if request.url != "http://localhost:3001/products/shopping_cart" && !@is_admin
+                -if request.url != "http://localhost:3001/products/shopping_cart" && !@is_admin && !@is_super
                   %li
                     %a(href="#" onclick="jump_to_shopping_cart()" )购物车
-                -if (@is_admin || User.find(session[:user_id]).admin == 'super')
+                -if @is_admin || @is_super
                   %li
                     %a(href = "#{new_products_path}") 新建商品
                 -if request.url != "http://localhost:3001/products/index"
                   %li
                     %a(href="/products/index" )商品列表
-                -if (@is_admin || User.find(session[:user_id]).admin == 'super')
+                -if (@is_admin || @is_super )
                   %li
                     %a(href = "/products/order_index") 订单管理
                   %li
