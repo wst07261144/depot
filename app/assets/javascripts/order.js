@@ -114,7 +114,7 @@ function change_order_status(order_id, el) {
         type: 'POST',
         data:{order_id: order_id,order_status :'已发货'},
         success:function(){
-            $(el).next().before('等待买家确认收货 ')
+            $(el).parent().append('等待买家确认收货')
             $(el).remove()
         },
         error:function(){}
@@ -127,7 +127,7 @@ function confirm_orders(order_id,el) {
         type: 'POST',
         data:{order_id: order_id,confirm_status :'确认收货'},
         success:function(){
-            $(el).next().before('交易成功')
+            $(el).parent().find('.none').removeClass('none').before('<span>交易成功  </span>')
             $(el).remove()
         },
         error:function(){}

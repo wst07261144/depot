@@ -305,7 +305,7 @@ class ProductsController < ApplicationController
   def scan_orders
     @name = User.find_by(id:session[:user_id]).name
     @subject = '已完成订单'
-    my_orders = Order.where(admin_delete: nil, order_status: '已发货', confirm_status: '确认收货').group_by{|order| order.product_id}
+    my_orders = Order.where(admin_delete: nil, order_status: '已发货', confirm_status: '确认收货').order(created_at: :desc).group_by{|order| order.product_id}
     @products = generate_order_admin1(my_orders)
   end
 
