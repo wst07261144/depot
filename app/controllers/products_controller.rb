@@ -277,13 +277,13 @@ class ProductsController < ApplicationController
   def order_index
     products = []
     @name = User.find_by(id:session[:user_id]).name
-    if (!@is_admin && User.find(session[:user_id]).admin != 'super')
+    if (!@is_admin && !@is_super)
       @subject = '我的订单'
        Order.where(user_id: session[:user_id],user_delete: nil).order(created_at: :desc).each do |order|
          products.push(generate_order_items(order))
        end
     end
-    if (is_admin || User.find(session[:user_id]).admin == 'super')
+    if (@is_admin || @is_super)
       @subject = '订单管理'
       Order.where(admin_delete: nil).order(created_at: :desc).each do |order|
         products.push(generate_order_items(order))

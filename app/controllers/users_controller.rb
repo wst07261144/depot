@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
   def update
     User.find(params[:id]).update_attributes(user_params)
-    redirect_to root_path
+    redirect_to '/users/super_index'
   end
 
   def destroy
