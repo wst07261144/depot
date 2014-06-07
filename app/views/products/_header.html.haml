@@ -20,16 +20,22 @@
                 -if @is_admin || @is_super
                   %li
                     %a(href = "#{new_products_path}") 新建商品
+                -if @is_super && request.url != 'http://localhost:3001/users/super_index'
+                  %li
+                    %a(href = "/users/super_index") 用户列表
                 -if request.url != "http://localhost:3001/products/index"
                   %li
                     %a(href="/products/index" )商品列表
                 -if (@is_admin || @is_super )
-                  %li
-                    %a(href = "/products/order_index") 订单管理
-                  %li
-                    %a(href = "/products/scan_orders") 已完成订单
+                  -if request.url != 'http://localhost:3001/products/order_index'
+                    %li
+                      %a(href = "/products/order_index") 订单管理
+                  -if request.url != 'http://localhost:3001/products/scan_orders'
+                    %li
+                      %a(href = "/products/scan_orders") 已完成订单
                 -else
-                  %li
-                    %a(href="/products/order_index")我的订单
+                  -if request.url != 'http://localhost:3001/products/order_index'
+                    %li
+                      %a(href="/products/order_index")我的订单
                 %li
                   %a(href="/users/quit" )退出
