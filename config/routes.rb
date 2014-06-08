@@ -34,6 +34,7 @@ Depot::Application.routes.draw do
   get '/products/order_index'=> 'products#order_index'
   delete '/products/image/:img_name' => 'products#delete_img'
   delete '/products/order/:order_id/' => 'products#delete_order'
+  delete '/products/admin_order/:order_id/' => 'products#admin_delete_order'
   delete '/products/orders/:product_id/' => 'products#delete_orders'
 
   get '/products/orders/:item' => 'products#index'

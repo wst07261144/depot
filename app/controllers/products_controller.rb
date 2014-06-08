@@ -321,6 +321,11 @@ class ProductsController < ApplicationController
     render text: 'ok'
   end
 
+  def admin_delete_order
+    Order.find_by(id: params[:order_id]).update(admin_delete: 'true')
+    render text: 'ok'
+  end
+
   def is_admin
     @is_admin = (User.find(session[:user_id]).admin == 'admin')
     @is_super = (User.find(session[:user_id]).admin == 'super')

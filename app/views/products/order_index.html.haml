@@ -15,10 +15,10 @@
                   -elsif product[:order_status] == '已发货'
                     -if product[:confirm_status] != '确认收货'
                       %a(href='javascript:{}'onclick="confirm_orders(#{product[:order_id]},this)")确认收货
-                      %a.none(href='javascript:{}'onclick="delete_orders('#{product[:order_id]}', 'user')")  删除
+                      %a.none(href='javascript:{}'onclick="delete_order('#{product[:order_id]}', 'user')")  删除
                     -else
                       %span 交易成功
-                      %a(href='javascript:{}'onclick="delete_orders('#{product[:order_id]}', 'user')")  删除
+                      %a(href='javascript:{}'onclick="delete_order('#{product[:order_id]}', 'user')")  删除
                 %span.label(style="background-color: #428bca" )
                   =product[:name]
               .panel-body
@@ -55,7 +55,7 @@
                   -elsif product[:order_status] == '已发货'
                     -if product[:confirm_status] == '确认收货'
                       交易成功
-                      %a(href='javascript:{}'onclick="delete_orders('#{product[:order_id]}', 'admin')") 删除
+                      %a(href='javascript:{}'onclick="delete_order('#{product[:order_id]}', 'admin')") 删除
                     -else
                       等待买家确认收货
                 %span.label(style="background-color: #428bca" )

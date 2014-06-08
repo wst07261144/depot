@@ -47,7 +47,7 @@ $(function(){
                 })
             }else{
                 var new_input = $("#size .none").clone().removeClass('none')
-                new_input.children('input').val(col)
+                new_input.children('input').val(size)
                 $('#size .none').before(new_input)
 
             }
@@ -311,22 +311,35 @@ function delete_img_when_edit(img_name, index){
     })
 }
 
-function delete_orders(order_or_product_id, admin) {
+function delete_orders(product_id) {
+
+    $.ajax({
+        url: '/products/orders/' + product_id,
+        type: 'DELETE',
+        success:function(){
+            $('#product_' + product_id).remove()
+        },
+        error:function(){}
+    })
+
+}
+
+function delete_order(order_id, admin) {
     if(admin == 'user'){
         $.ajax({
-            url: '/products/order/' + order_or_product_id,
+            url: '/products/order/' + order_id,
             type: 'DELETE',
             success:function(){
-                $('#order_' + order_or_product_id).remove()
+                $('#order_' + order_id).remove()
             },
             error:function(){}
         })
     } else {
         $.ajax({
-            url: '/products/orders/' + order_or_product_id,
+            url: '/products/admin_order/' + order_id,
             type: 'DELETE',
             success:function(){
-                $('#product_' + order_or_product_id).remove()
+                $('#order_' + order_id).remove()
             },
             error:function(){}
         })

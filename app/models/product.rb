@@ -1,8 +1,11 @@
 class Product < ActiveRecord::Base
 
-  has_many :product_colors, dependent: :destroy
-  has_many :product_images, dependent: :destroy
-  has_many :product_sizes, dependent: :destroy
+  #has_many :product_colors, dependent: :destroy
+  #has_many :product_images, dependent: :destroy
+  #has_many :product_sizes, dependent: :destroy
+  has_many :product_colors
+  has_many :product_images
+  has_many :product_sizes
 
   validates :title,  presence: true, uniqueness: true
   validates :mian_liao,  presence: true
